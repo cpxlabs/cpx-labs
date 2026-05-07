@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { ContactPayload } from "@/app/api/contact/route";
 
 const contactInfo = [
   {
@@ -30,7 +31,7 @@ const contactInfo = [
 ];
 
 export default function Contact() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<ContactPayload>({
     name: "",
     email: "",
     company: "",
@@ -38,6 +39,8 @@ export default function Contact() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -47,10 +50,30 @@ export default function Contact() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, connect to a backend or form service
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(
+          (data as { error?: string }).error ?? "Erro ao enviar mensagem."
+        );
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Erro inesperado. Tente novamente."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -146,7 +169,7 @@ export default function Contact() {
                   Obrigado pelo contato. Nossa equipe retornará em breve.
                 </p>
                 <button
-                  onClick={() => setSubmitted(false)}
+                  onClick={() => { setSubmitted(false); setError(null); }}
                   className="mt-6 text-sky-400 hover:text-sky-300 text-sm font-medium"
                 >
                   Enviar outra mensagem
@@ -233,10 +256,14 @@ export default function Contact() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-sky-500 hover:bg-sky-400 text-white py-3.5 rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:shadow-sky-500/25"
+                  disabled={loading}
+                  className="w-full bg-sky-500 hover:bg-sky-400 disabled:opacity-60 disabled:cursor-not-allowed text-white py-3.5 rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:shadow-sky-500/25"
                 >
-                  Enviar Mensagem
+                  {loading ? "Enviando…" : "Enviar Mensagem"}
                 </button>
+                {error && (
+                  <p className="text-red-400 text-sm text-center">{error}</p>
+                )}
               </form>
             )}
           </div>
