@@ -24,6 +24,13 @@ export interface NormalizedSplitTrack {
   endTime: number | null;
 }
 
+interface PreparedSplitTrack {
+  title: string;
+  titleProvided: boolean;
+  startTime: number;
+  endTime: number | null;
+}
+
 export interface NormalizedYouTubeDownloadPayload {
   url: string;
   format: DownloadFormat;
@@ -128,12 +135,12 @@ function isSupportedYouTubeUrl(rawUrl: string): boolean {
   );
 }
 
-function normalizeTracks(value: unknown): NormalizedSplitTrack[] | undefined {
+function normalizeTracks(value: unknown): PreparedSplitTrack[] | undefined {
   if (!Array.isArray(value)) {
     return undefined;
   }
 
-  return value.map((track, index) => {
+  return value.map((track) => {
     const candidate = track as SplitTrackInput;
     const hasProvidedTitle =
       candidate?.title !== undefined && candidate?.title !== null;
@@ -145,7 +152,8 @@ function normalizeTracks(value: unknown): NormalizedSplitTrack[] | undefined {
         : Number(candidate.endTime);
 
     return {
-      title: hasProvidedTitle ? title : getDefaultTrackTitle(index),
+      title,
+      titleProvided: hasProvidedTitle,
       startTime,
       endTime,
     };
@@ -201,7 +209,7 @@ export function validateYouTubeDownloadPayload(body: unknown): ValidationResult 
         return { error: "Cada faixa deve ter startTime maior ou igual a zero." };
       }
 
-      if (track.title === "") {
+      if (track.titleProvided && !track.title) {
         return { error: "Cada faixa com título informado precisa ter um nome válido." };
       }
 
@@ -233,7 +241,11 @@ export function validateYouTubeDownloadPayload(body: unknown): ValidationResult 
       url,
       format,
       splitMode,
-      tracks,
+      tracks: tracks.map((track, index) => ({
+        title: track.titleProvided ? track.title : getDefaultTrackTitle(index),
+        startTime: track.startTime,
+        endTime: track.endTime,
+      })),
       ownershipConfirmed: true,
     },
   };
@@ -496,9 +508,11 @@ export async function getYouTubeDownloadJobStatus(
     buildWorkerUrl(config.workerBaseUrl, `/jobs/${jobId}`),
     {
       method: "GET",
-      headers: config.workerApiKey
-        ? { Authorization: `Bearer ${config.workerApiKey}` }
-        : undefined,
+      headers: {
+        ...(config.workerApiKey
+          ? { Authorization: `Bearer ${config.workerApiKey}` }
+          : {}),
+      },
       cache: "no-store",
     }
   );
