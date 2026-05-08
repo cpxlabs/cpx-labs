@@ -72,6 +72,22 @@ describe("POST /api/youtube-downloads", () => {
     expect(json.error).toMatch(/timestamps/i);
   });
 
+  it("rejects blank track titles when explicitly provided", async () => {
+    const response = await POST(
+      makePostRequest({
+        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        format: "mp3",
+        splitMode: "timestamps",
+        tracks: [{ title: "   ", startTime: 0, endTime: 15 }],
+        ownershipConfirmed: true,
+      })
+    );
+
+    expect(response.status).toBe(422);
+    const json = await response.json();
+    expect(json.error).toMatch(/título|nome/i);
+  });
+
   it("applies rate limiting before forwarding jobs", async () => {
     process.env.YOUTUBE_DOWNLOAD_RATE_LIMIT_MAX = "1";
 

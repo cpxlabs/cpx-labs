@@ -72,7 +72,7 @@ const ALLOWED_HOSTS = new Set([
   "youtu.be",
 ]);
 const RATE_LIMIT_BUCKETS = new Map<string, { count: number; resetAt: number }>();
-const DEFAULT_TRACK_PREFIX = "Faixa";
+const DEFAULT_TRACK_LABEL = "Faixa";
 
 function sanitizeString(value: unknown, maxLength = 2000): string {
   if (typeof value !== "string") return "";
@@ -88,7 +88,7 @@ function withoutLeadingSlash(value: string): string {
 }
 
 function getDefaultTrackTitle(index: number): string {
-  return `${DEFAULT_TRACK_PREFIX} ${index + 1}`;
+  return `${DEFAULT_TRACK_LABEL} ${index + 1}`;
 }
 
 function parsePositiveInteger(value: string | undefined, fallback: number): number {
@@ -135,6 +135,8 @@ function normalizeTracks(value: unknown): NormalizedSplitTrack[] | undefined {
 
   return value.map((track, index) => {
     const candidate = track as SplitTrackInput;
+    const hasProvidedTitle =
+      candidate?.title !== undefined && candidate?.title !== null;
     const title = sanitizeString(candidate?.title, 120);
     const startTime = Number(candidate?.startTime);
     const endTime =
@@ -143,7 +145,7 @@ function normalizeTracks(value: unknown): NormalizedSplitTrack[] | undefined {
         : Number(candidate.endTime);
 
     return {
-      title: title || getDefaultTrackTitle(index),
+      title: hasProvidedTitle ? title : getDefaultTrackTitle(index),
       startTime,
       endTime,
     };
@@ -197,6 +199,10 @@ export function validateYouTubeDownloadPayload(body: unknown): ValidationResult 
     for (const track of tracks) {
       if (!Number.isFinite(track.startTime) || track.startTime < 0) {
         return { error: "Cada faixa deve ter startTime maior ou igual a zero." };
+      }
+
+      if (track.title === "") {
+        return { error: "Cada faixa com título informado precisa ter um nome válido." };
       }
 
       if (track.endTime !== null) {
@@ -265,6 +271,13 @@ export function applyYouTubeDownloadRateLimit(
   const config = getYouTubeDownloadRouteConfig();
   const now = Date.now();
   const key = getClientIp(request);
+
+  for (const [bucketKey, entry] of RATE_LIMIT_BUCKETS.entries()) {
+    if (entry.resetAt <= now) {
+      RATE_LIMIT_BUCKETS.delete(bucketKey);
+    }
+  }
+
   const bucket = RATE_LIMIT_BUCKETS.get(key);
 
   if (!bucket || bucket.resetAt <= now) {
