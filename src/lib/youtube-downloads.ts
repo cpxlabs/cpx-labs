@@ -51,6 +51,12 @@ export interface ValidationResult {
   error?: string;
 }
 
+export interface RateLimitResult {
+  allowed: boolean;
+  headers: Record<string, string>;
+  retryAfterSeconds?: number;
+}
+
 const ALLOWED_FORMATS = new Set<DownloadFormat>(["mp3", "wav"]);
 const ALLOWED_SPLIT_MODES = new Set<SplitMode>([
   "none",
@@ -109,7 +115,7 @@ function isSupportedYouTubeUrl(rawUrl: string): boolean {
   );
 }
 
-function normalizeTracks(value: unknown): ValidationResult["data"]["tracks"] | undefined {
+function normalizeTracks(value: unknown): NormalizedSplitTrack[] | undefined {
   if (!Array.isArray(value)) {
     return undefined;
   }
@@ -240,7 +246,9 @@ function getClientIp(request: NextRequest): string {
   return request.headers.get("x-real-ip")?.trim() || "unknown";
 }
 
-export function applyYouTubeDownloadRateLimit(request: NextRequest) {
+export function applyYouTubeDownloadRateLimit(
+  request: NextRequest
+): RateLimitResult {
   const config = getYouTubeDownloadRouteConfig();
   const now = Date.now();
   const key = getClientIp(request);
