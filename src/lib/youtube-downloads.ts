@@ -72,6 +72,7 @@ const ALLOWED_HOSTS = new Set([
   "youtu.be",
 ]);
 const RATE_LIMIT_BUCKETS = new Map<string, { count: number; resetAt: number }>();
+const DEFAULT_TRACK_TITLE_PREFIX = "Faixa";
 
 function sanitizeString(value: unknown, maxLength = 2000): string {
   if (typeof value !== "string") return "";
@@ -138,7 +139,7 @@ function normalizeTracks(value: unknown): NormalizedSplitTrack[] | undefined {
         : Number(candidate.endTime);
 
     return {
-      title: title || `Faixa ${index + 1}`,
+      title: title || `${DEFAULT_TRACK_TITLE_PREFIX} ${index + 1}`,
       startTime,
       endTime,
     };
@@ -349,7 +350,7 @@ function normalizeAssetUrl(value: unknown, storagePublicUrl: string): string | n
 
     return new URL(
       withoutLeadingSlash(candidate),
-      withTrailingSlash(storagePublicUrl.replace(/\/$/, ""))
+      withTrailingSlash(storagePublicUrl)
     ).toString();
   }
 }
