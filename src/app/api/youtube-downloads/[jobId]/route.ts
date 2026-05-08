@@ -9,7 +9,7 @@ export const runtime = "nodejs";
 
 export async function GET(
   request: NextRequest,
-  context: RouteContext<"/api/youtube-downloads/[jobId]">
+  context: { params: Promise<{ jobId: string }> }
 ) {
   const config = getYouTubeDownloadRouteConfig();
 
