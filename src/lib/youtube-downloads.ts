@@ -78,6 +78,14 @@ function sanitizeString(value: unknown, maxLength = 2000): string {
   return value.trim().slice(0, maxLength);
 }
 
+function withTrailingSlash(value: string): string {
+  return value.endsWith("/") ? value : `${value}/`;
+}
+
+function withoutLeadingSlash(value: string): string {
+  return value.replace(/^\//, "");
+}
+
 function parsePositiveInteger(value: string | undefined, fallback: number): number {
   const parsed = Number.parseInt(value ?? "", 10);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
@@ -130,7 +138,7 @@ function normalizeTracks(value: unknown): NormalizedSplitTrack[] | undefined {
         : Number(candidate.endTime);
 
     return {
-      title: title || `Track ${index + 1}`,
+      title: title || `Faixa ${index + 1}`,
       startTime,
       endTime,
     };
@@ -299,8 +307,7 @@ export function applyYouTubeDownloadRateLimit(
 }
 
 function buildWorkerUrl(baseUrl: string, path: string): string {
-  const normalizedBase = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
-  return new URL(path.replace(/^\//, ""), normalizedBase).toString();
+  return new URL(withoutLeadingSlash(path), withTrailingSlash(baseUrl)).toString();
 }
 
 function getStatusUrl(request: NextRequest, jobId: string): string {
@@ -340,7 +347,10 @@ function normalizeAssetUrl(value: unknown, storagePublicUrl: string): string | n
       return null;
     }
 
-    return new URL(candidate.replace(/^\//, ""), `${storagePublicUrl.replace(/\/$/, "")}/`).toString();
+    return new URL(
+      withoutLeadingSlash(candidate),
+      withTrailingSlash(storagePublicUrl.replace(/\/$/, ""))
+    ).toString();
   }
 }
 
