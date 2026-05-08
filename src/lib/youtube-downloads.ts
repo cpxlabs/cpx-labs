@@ -242,7 +242,10 @@ export function validateYouTubeDownloadPayload(body: unknown): ValidationResult 
       format,
       splitMode,
       tracks: tracks.map((track, index) => ({
-        title: track.titleProvided ? track.title : getDefaultTrackTitle(index),
+        title:
+          track.titleProvided && track.title
+            ? track.title
+            : getDefaultTrackTitle(index),
         startTime: track.startTime,
         endTime: track.endTime,
       })),
@@ -311,11 +314,13 @@ export function applyYouTubeDownloadRateLimit(
   }
 
   if (bucket.count >= config.rateLimitMax) {
+    const retryAfterSeconds = Math.max(Math.ceil((bucket.resetAt - now) / 1000), 1);
+
     return {
       allowed: false,
-      retryAfterSeconds: Math.max(Math.ceil((bucket.resetAt - now) / 1000), 1),
+      retryAfterSeconds,
       headers: {
-        "Retry-After": String(Math.max(Math.ceil((bucket.resetAt - now) / 1000), 1)),
+        "Retry-After": String(retryAfterSeconds),
         "X-RateLimit-Limit": String(config.rateLimitMax),
         "X-RateLimit-Remaining": "0",
         "X-RateLimit-Reset": String(Math.floor(bucket.resetAt / 1000)),

@@ -164,8 +164,8 @@ describe("POST /api/youtube-downloads", () => {
       })
     );
 
-    const [, init] = fetchSpy.mock.calls[0];
-    const body = JSON.parse(String(init?.body));
+    const [, requestInit] = fetchSpy.mock.calls[0];
+    const body = JSON.parse(String(requestInit?.body));
     expect(body).toMatchObject({
       source: "youtube",
       url: "https://youtu.be/dQw4w9WgXcQ",
