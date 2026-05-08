@@ -97,7 +97,7 @@ Cria um job assíncrono para processar áudio de um vídeo do YouTube por meio d
 - Aceita `url`, `format` (`mp3` ou `wav`), `splitMode` (`none`, `chapters`, `timestamps`) e `ownershipConfirmed`.
 - Para `splitMode: "timestamps"`, envie `tracks` com `startTime`, `endTime` opcional e `title` opcional.
 - A rota aplica throttling básico por IP e **não** faz o download/conversion localmente dentro da Vercel Function.
-- O throttling atual é **best effort** em memória; para produção com múltiplas instâncias, substitua por Redis/KV.
+- A limitação de taxa atual é **best effort** em memória; para produção com múltiplas instâncias, substitua por Redis/KV.
 - Requer `YOUTUBE_DOWNLOADS_ENABLED=true` e `MEDIA_WORKER_BASE_URL` configurados.
 
 Exemplo de payload:

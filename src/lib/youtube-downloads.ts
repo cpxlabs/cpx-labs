@@ -72,7 +72,7 @@ const ALLOWED_HOSTS = new Set([
   "youtu.be",
 ]);
 const RATE_LIMIT_BUCKETS = new Map<string, { count: number; resetAt: number }>();
-const DEFAULT_PORTUGUESE_TRACK_TITLE_PREFIX = "Faixa";
+const DEFAULT_TRACK_PREFIX = "Faixa";
 
 function sanitizeString(value: unknown, maxLength = 2000): string {
   if (typeof value !== "string") return "";
@@ -85,6 +85,10 @@ function withTrailingSlash(value: string): string {
 
 function withoutLeadingSlash(value: string): string {
   return value.replace(/^\//, "");
+}
+
+function getDefaultTrackTitle(index: number): string {
+  return `${DEFAULT_TRACK_PREFIX} ${index + 1}`;
 }
 
 function parsePositiveInteger(value: string | undefined, fallback: number): number {
@@ -139,7 +143,7 @@ function normalizeTracks(value: unknown): NormalizedSplitTrack[] | undefined {
         : Number(candidate.endTime);
 
     return {
-      title: title || `${DEFAULT_PORTUGUESE_TRACK_TITLE_PREFIX} ${index + 1}`,
+      title: title || getDefaultTrackTitle(index),
       startTime,
       endTime,
     };
@@ -458,7 +462,7 @@ export async function submitYouTubeDownloadJob(
   });
 
   if (!response.ok) {
-    throw new Error("WORKER_REQUEST_FAILED");
+    throw new Error(`Worker request failed with status ${response.status}`);
   }
 
   const json = (await response.json().catch(() => null)) as unknown;
@@ -487,7 +491,7 @@ export async function getYouTubeDownloadJobStatus(
   );
 
   if (!response.ok) {
-    throw new Error("WORKER_REQUEST_FAILED");
+    throw new Error(`Worker request failed with status ${response.status}`);
   }
 
   const json = (await response.json().catch(() => null)) as unknown;
