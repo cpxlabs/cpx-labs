@@ -86,6 +86,37 @@ npm run test:coverage
 | `Contact.test.tsx` | Renderização do formulário, envio com sucesso, erros, payload |
 | `Footer.test.tsx` | Links de navegação, redes sociais, copyright |
 | `api.contact.test.ts` | Validação, sanitização e respostas do endpoint `/api/contact` |
+| `api.youtube-downloads.test.ts` | Validação, rate limiting e orquestração dos endpoints `/api/youtube-downloads` |
+
+## API routes
+
+### `POST /api/youtube-downloads`
+
+Cria um job assíncrono para processar áudio de um vídeo do YouTube por meio de um worker externo.
+
+- Aceita `url`, `format` (`mp3` ou `wav`), `splitMode` (`none`, `chapters`, `timestamps`) e `ownershipConfirmed`.
+- Para `splitMode: "timestamps"`, envie `tracks` com `startTime`, `endTime` opcional e `title` opcional.
+- A rota aplica throttling básico por IP e **não** faz o download/conversion localmente dentro da Vercel Function.
+- Requer `YOUTUBE_DOWNLOADS_ENABLED=true` e `MEDIA_WORKER_BASE_URL` configurados.
+
+Exemplo de payload:
+
+```json
+{
+  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "format": "mp3",
+  "splitMode": "timestamps",
+  "tracks": [
+    { "title": "Intro", "startTime": 0, "endTime": 30 },
+    { "title": "Main", "startTime": 30, "endTime": 90 }
+  ],
+  "ownershipConfirmed": true
+}
+```
+
+### `GET /api/youtube-downloads/:jobId`
+
+Consulta o status do job no worker externo e retorna links de download quando disponíveis.
 
 ## Deploy na Vercel
 
@@ -121,8 +152,16 @@ Configure as seguintes variáveis em **Vercel Dashboard → Project → Settings
 | `SMTP_PORT` | ⚠️ opcional | Porta SMTP (padrão: `587`) |
 | `SMTP_USER` | ⚠️ opcional | Usuário SMTP |
 | `SMTP_PASS` | ⚠️ opcional | Senha SMTP |
+| `YOUTUBE_DOWNLOADS_ENABLED` | ⚠️ opcional | Habilita as rotas `/api/youtube-downloads` |
+| `MEDIA_WORKER_BASE_URL` | ⚠️ opcional | URL base do worker responsável por yt-dlp/ffmpeg |
+| `MEDIA_WORKER_API_KEY` | ⚠️ opcional | Chave Bearer enviada ao worker |
+| `MEDIA_STORAGE_PUBLIC_URL` | ⚠️ opcional | Base pública para transformar paths relativos do worker em links absolutos |
+| `YOUTUBE_DOWNLOAD_RATE_LIMIT_MAX` | ⚠️ opcional | Máximo de requisições por IP dentro da janela |
+| `YOUTUBE_DOWNLOAD_RATE_LIMIT_WINDOW_MS` | ⚠️ opcional | Janela do throttling em milissegundos |
 
 > **Sem SMTP configurado**: as submissões do formulário são registradas nos logs da Vercel Function. Integre o `nodemailer` (ou outro provider como [Resend](https://resend.com)) no arquivo `src/app/api/contact/route.ts` para habilitar o envio real de e-mails.
+
+> **Downloads do YouTube**: as rotas adicionadas apenas validam, limitam e encaminham jobs. O processamento real deve acontecer fora da Vercel, em um worker dedicado. Use somente com conteúdo próprio ou autorizado.
 
 ### Domínio customizado
 
@@ -135,6 +174,7 @@ cpx-labs/
 ├── src/
 │   ├── __tests__/
 │   │   ├── api.contact.test.ts   # Testes da route handler /api/contact
+│   │   ├── api.youtube-downloads.test.ts # Testes das rotas /api/youtube-downloads
 │   │   ├── About.test.tsx        # Testes do componente Quem Somos
 │   │   ├── Contact.test.tsx      # Testes do formulário de contato
 │   │   ├── Footer.test.tsx       # Testes do rodapé
@@ -144,6 +184,10 @@ cpx-labs/
 │   │   ├── api/
 │   │   │   └── contact/
 │   │   │       └── route.ts      # Serverless function — formulário de contato
+│   │   │   └── youtube-downloads/
+│   │   │       ├── [jobId]/
+│   │   │       │   └── route.ts  # Consulta de status dos jobs de áudio
+│   │   │       └── route.ts      # Criação de jobs de download/conversão
 │   │   ├── globals.css
 │   │   ├── layout.tsx            # Layout raiz (metadados SEO, lang="pt-BR")
 │   │   └── page.tsx              # Página principal (single-page)
@@ -154,6 +198,8 @@ cpx-labs/
 │       ├── About.tsx             # Quem somos + equipe
 │       ├── Contact.tsx           # Formulário de contato
 │       └── Footer.tsx            # Rodapé
+│   └── lib/
+│       └── youtube-downloads.ts  # Validação, throttling e integração com worker
 ├── public/
 │   └── screenshots/              # Capturas de tela das seções
 ├── .env.example                  # Template de variáveis de ambiente
