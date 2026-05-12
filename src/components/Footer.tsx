@@ -30,9 +30,14 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <Link href="#inicio" className="mb-4 flex items-center gap-3">
               <div className="brand-logo-mark h-10 w-10" />
-              <span className="text-xl font-bold uppercase tracking-[0.28em] text-white">
-                CPX Labs
-              </span>
+              <div className="flex items-baseline gap-2 text-white">
+                <span className="text-base font-semibold uppercase tracking-[0.32em] text-brand-300">
+                  CPX
+                </span>
+                <span className="text-xl font-bold uppercase tracking-[0.28em]">
+                  Labs
+                </span>
+              </div>
             </Link>
             <p className="mb-4 text-sm leading-relaxed text-brand-100/72">
               Consultoria em TI especializada em transformação digital. Seu

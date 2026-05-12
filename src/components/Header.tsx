@@ -34,9 +34,14 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           <Link href="#inicio" className="flex items-center gap-3 group">
             <div className="brand-logo-mark h-10 w-10 transition-transform duration-300 group-hover:scale-105" />
-            <span className="text-white font-bold text-xl tracking-[0.28em] uppercase">
-              CPX Labs
-            </span>
+            <div className="flex items-baseline gap-2 text-white">
+              <span className="text-base font-semibold uppercase tracking-[0.32em] text-brand-300">
+                CPX
+              </span>
+              <span className="text-xl font-bold uppercase tracking-[0.28em]">
+                Labs
+              </span>
+            </div>
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
