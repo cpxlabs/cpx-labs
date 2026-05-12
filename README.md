@@ -2,6 +2,21 @@
 
 Site institucional do **CPX Labs**, grupo de consultoria em TI, construído com **Next.js 16**, **TypeScript** e **Tailwind CSS 4**.
 
+## Identidade visual
+
+A interface segue a paleta oficial do logo do **CPX Labs**, baseada em tons profundos de roxo, violeta e branco.
+
+| Token | Hex | Uso principal |
+|---|---|---|
+| `brand-950` | `#16002f` | fundos escuros e rodapé |
+| `brand-900` | `#200047` | superfícies escuras secundárias |
+| `brand-700` | `#42058f` | contraste e blocos institucionais |
+| `brand-500` | `#7f2cff` | CTAs e destaques principais |
+| `brand-300` | `#c29fff` | realces, hover e números |
+| `brand-100` | `#ede2ff` | fundos suaves e badges claros |
+
+Os tokens ficam centralizados em `/src/app/globals.css` e são reutilizados por todas as seções principais.
+
 ## Preview
 
 ### Início
@@ -86,6 +101,12 @@ npm run test:coverage
 | `Contact.test.tsx` | Renderização do formulário, envio com sucesso, erros, payload |
 | `Footer.test.tsx` | Links de navegação, redes sociais, copyright |
 | `api.contact.test.ts` | Validação, sanitização e respostas do endpoint `/api/contact` |
+
+## Estilo e branding
+
+- A paleta global e o tratamento do logotipo ficam em `src/app/globals.css`.
+- Os componentes em `src/components/` consomem os tokens `brand-*` para manter consistência visual.
+- As screenshots em `public/screenshots/` foram atualizadas para refletir a identidade visual atual.
 
 ## Deploy na Vercel
 

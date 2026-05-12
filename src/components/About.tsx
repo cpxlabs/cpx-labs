@@ -25,28 +25,28 @@ const team = [
     role: "CEO & Co-fundador",
     bio: "15 anos de experiência em TI e gestão de produtos digitais em empresas de grande porte.",
     initials: "CP",
-    color: "bg-sky-500",
+    color: "bg-brand-700",
   },
   {
     name: "Ana Lima",
     role: "CTO & Co-fundadora",
     bio: "Especialista em arquitetura de software, cloud e segurança da informação.",
     initials: "AL",
-    color: "bg-indigo-500",
+    color: "bg-brand-600",
   },
   {
     name: "Rafael Souza",
     role: "Head de Engenharia",
     bio: "Expert em desenvolvimento fullstack e liderança de times de alta performance.",
     initials: "RS",
-    color: "bg-emerald-500",
+    color: "bg-brand-500",
   },
   {
     name: "Beatriz Santos",
     role: "Head de Projetos",
     bio: "PMP certificada com vasta experiência em gestão ágil de projetos de TI complexos.",
     initials: "BS",
-    color: "bg-amber-500",
+    color: "bg-brand-400",
   },
 ];
 
@@ -54,45 +54,42 @@ export default function About() {
   return (
     <section id="quem-somos" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block bg-sky-100 text-sky-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+          <span className="mb-4 inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-800">
             Nossa história
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-950 mb-4">
             Quem Somos
           </h2>
-          <p className="text-slate-500 text-lg max-w-3xl mx-auto">
+          <p className="text-brand-800/72 text-lg max-w-3xl mx-auto">
             O CPX Labs é uma consultoria de TI especializada em transformação
             digital. Nascemos da visão de que tecnologia deve ser um{" "}
-            <strong className="text-slate-700">diferencial estratégico</strong>{" "}
+            <strong className="text-brand-900">diferencial estratégico</strong>{" "}
             — não apenas infraestrutura. Trabalhamos lado a lado com nossos
             clientes para criar soluções que realmente fazem a diferença.
           </p>
         </div>
 
-        {/* Mission / Vision / Values */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {values.map((item) => (
             <div
               key={item.title}
-              className="text-center p-8 rounded-2xl bg-slate-50 border border-slate-100"
+              className="rounded-3xl border border-brand-100 bg-brand-50 p-8 text-center"
             >
               <div className="text-4xl mb-4">{item.icon}</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
+              <h3 className="mb-3 text-xl font-bold text-brand-950">
                 {item.title}
               </h3>
-              <p className="text-slate-500 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed text-brand-800/72">
                 {item.description}
               </p>
             </div>
           ))}
         </div>
 
-        {/* Why Choose Us */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
           <div>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-6">
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-brand-950 mb-6">
               Por que escolher o CPX Labs?
             </h3>
             <div className="space-y-4">
@@ -115,14 +112,14 @@ export default function About() {
                 },
               ].map((item) => (
                 <div key={item.title} className="flex gap-4">
-                  <div className="w-6 h-6 bg-sky-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand-500">
                     <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                   <div>
-                    <p className="font-semibold text-slate-900">{item.title}</p>
-                    <p className="text-slate-500 text-sm mt-0.5">{item.desc}</p>
+                    <p className="font-semibold text-brand-950">{item.title}</p>
+                    <p className="mt-0.5 text-sm text-brand-800/72">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -137,38 +134,37 @@ export default function About() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="bg-slate-900 rounded-2xl p-6 text-center"
+                className="rounded-3xl bg-brand-950 p-6 text-center"
               >
-                <p className="text-3xl font-extrabold text-sky-400">
+                <p className="text-3xl font-extrabold text-brand-300">
                   {stat.number}
                 </p>
-                <p className="text-slate-400 text-sm mt-1">{stat.label}</p>
+                <p className="mt-1 text-sm text-brand-100/68">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Team */}
         <div>
-          <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 text-center mb-10">
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-brand-950 text-center mb-10">
             Nossa Liderança
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {team.map((member) => (
               <div
                 key={member.name}
-                className="text-center p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow"
+                className="rounded-3xl border border-brand-100 p-6 text-center transition-shadow hover:shadow-lg hover:shadow-brand-500/10"
               >
                 <div
                   className={`w-16 h-16 ${member.color} rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-4`}
                 >
                   {member.initials}
                 </div>
-                <h4 className="font-bold text-slate-900">{member.name}</h4>
-                <p className="text-sky-600 text-sm font-medium mb-2">
+                <h4 className="font-bold text-brand-950">{member.name}</h4>
+                <p className="mb-2 text-sm font-medium text-brand-600">
                   {member.role}
                 </p>
-                <p className="text-slate-500 text-sm">{member.bio}</p>
+                <p className="text-sm text-brand-800/72">{member.bio}</p>
               </div>
             ))}
           </div>
