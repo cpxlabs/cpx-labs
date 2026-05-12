@@ -45,40 +45,38 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="servicos" className="py-24 bg-slate-50">
+    <section id="servicos" className="py-24 bg-brand-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block bg-sky-100 text-sky-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+          <span className="mb-4 inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-800">
             O que fazemos
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-950 mb-4">
             Nossas Soluções em TI
           </h2>
-          <p className="text-slate-500 text-lg max-w-2xl mx-auto">
+          <p className="text-brand-800/72 text-lg max-w-2xl mx-auto">
             Oferecemos um portfólio completo de serviços tecnológicos para
             impulsionar a transformação digital da sua empresa.
           </p>
         </div>
 
-        {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => (
             <div
               key={service.title}
-              className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-md hover:border-sky-200 transition-all group"
+              className="group rounded-3xl border border-brand-200 bg-white p-8 shadow-sm transition-all hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/10"
             >
               <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-sky-600 transition-colors">
+              <h3 className="mb-3 text-xl font-bold text-brand-950 transition-colors group-hover:text-brand-700">
                 {service.title}
               </h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-5">
+              <p className="mb-5 text-sm leading-relaxed text-brand-800/72">
                 {service.description}
               </p>
               <ul className="space-y-1.5">
                 {service.highlights.map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
-                    <span className="w-1.5 h-1.5 bg-sky-500 rounded-full flex-shrink-0" />
+                  <li key={item} className="flex items-center gap-2 text-sm text-brand-900/78">
+                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
                     {item}
                   </li>
                 ))}

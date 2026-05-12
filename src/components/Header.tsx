@@ -26,42 +26,37 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-slate-900/95 backdrop-blur-sm shadow-lg"
+          ? "bg-brand-950/95 backdrop-blur-sm shadow-lg shadow-brand-950/20"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="#inicio" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center font-bold text-white text-sm group-hover:bg-sky-400 transition-colors">
-              CPX
-            </div>
-            <span className="text-white font-bold text-xl tracking-tight">
-              Labs
+          <Link href="#inicio" className="flex items-center gap-3 group">
+            <div className="brand-logo-mark h-10 w-10 transition-transform duration-300 group-hover:scale-105" />
+            <span className="text-white font-bold text-xl tracking-[0.28em] uppercase">
+              CPX Labs
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-slate-300 hover:text-sky-400 transition-colors text-sm font-medium"
+                className="text-brand-100/80 hover:text-brand-300 transition-colors text-sm font-medium"
               >
                 {link.label}
               </Link>
             ))}
             <Link
               href="#contato"
-              className="bg-sky-500 hover:bg-sky-400 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+              className="bg-brand-500 hover:bg-brand-400 text-white px-4 py-2 rounded-full text-sm font-semibold transition-all brand-glow"
             >
               Fale Conosco
             </Link>
           </nav>
 
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden text-white p-2"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -73,15 +68,14 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {menuOpen && (
-          <div className="md:hidden bg-slate-900 border-t border-slate-700 py-4">
+          <div className="md:hidden bg-brand-950/95 border-t border-brand-800 py-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={handleNavClick}
-                className="block px-4 py-3 text-slate-300 hover:text-sky-400 hover:bg-slate-800 transition-colors text-sm font-medium"
+                className="block px-4 py-3 text-brand-100/80 hover:text-brand-300 hover:bg-brand-900 transition-colors text-sm font-medium"
               >
                 {link.label}
               </Link>
@@ -90,7 +84,7 @@ export default function Header() {
               <Link
                 href="#contato"
                 onClick={handleNavClick}
-                className="block w-full bg-sky-500 hover:bg-sky-400 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors text-center"
+                className="block w-full bg-brand-500 hover:bg-brand-400 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors text-center"
               >
                 Fale Conosco
               </Link>

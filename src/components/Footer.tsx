@@ -24,31 +24,27 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-950 border-t border-slate-800">
+    <footer className="border-t border-brand-900 bg-brand-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          {/* Brand */}
           <div className="lg:col-span-1">
-            <Link href="#inicio" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center font-bold text-white text-sm">
-                CPX
-              </div>
-              <span className="text-white font-bold text-xl tracking-tight">
-                Labs
+            <Link href="#inicio" className="mb-4 flex items-center gap-3">
+              <div className="brand-logo-mark h-10 w-10" />
+              <span className="text-xl font-bold uppercase tracking-[0.28em] text-white">
+                CPX Labs
               </span>
             </Link>
-            <p className="text-slate-400 text-sm leading-relaxed mb-4">
+            <p className="mb-4 text-sm leading-relaxed text-brand-100/72">
               Consultoria em TI especializada em transformação digital. Seu
               parceiro estratégico em tecnologia.
             </p>
-            <p className="text-slate-500 text-xs">
+            <p className="text-xs text-brand-200/48">
               CNPJ: 00.000.000/0001-00
               <br />
               São Paulo, SP — Brasil
             </p>
           </div>
 
-          {/* Links */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title}>
               <h4 className="text-white font-semibold text-sm mb-4">{title}</h4>
@@ -57,7 +53,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-slate-400 hover:text-sky-400 text-sm transition-colors"
+                      className="text-sm text-brand-100/68 transition-colors hover:text-brand-300"
                     >
                       {link.label}
                     </Link>
@@ -68,9 +64,8 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom */}
-        <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-sm">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-brand-900 pt-8 sm:flex-row">
+          <p className="text-sm text-brand-200/48">
             © {currentYear} CPX Labs. Todos os direitos reservados.
           </p>
           <div className="flex gap-4">
@@ -84,7 +79,7 @@ export default function Footer() {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-500 hover:text-sky-400 text-sm transition-colors"
+                className="text-sm text-brand-100/60 transition-colors hover:text-brand-300"
               >
                 {social.label}
               </a>

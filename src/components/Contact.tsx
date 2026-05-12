@@ -77,39 +77,40 @@ export default function Contact() {
   };
 
   return (
-    <section id="contato" className="py-24 bg-slate-900">
+    <section
+      id="contato"
+      className="bg-[linear-gradient(180deg,var(--brand-950)_0%,var(--brand-900)_100%)] py-24"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block bg-sky-500/10 border border-sky-500/30 text-sky-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+          <span className="mb-4 inline-block rounded-full border border-brand-400/30 bg-brand-500/12 px-4 py-1.5 text-sm font-semibold text-brand-100">
             Entre em contato
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
             Vamos conversar sobre o seu projeto
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+          <p className="text-brand-100/72 text-lg max-w-2xl mx-auto">
             Preencha o formulário ou utilize nossos canais de contato. Nossa
             equipe responde em até 24 horas úteis.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Info */}
           <div className="space-y-6">
             {contactInfo.map((item) => (
               <div
                 key={item.title}
-                className="flex items-start gap-4 p-5 bg-slate-800 rounded-xl border border-slate-700"
+                className="flex items-start gap-4 rounded-2xl border border-brand-800 bg-brand-900/85 p-5"
               >
                 <div className="text-2xl">{item.icon}</div>
                 <div>
-                  <p className="text-slate-400 text-sm">{item.title}</p>
+                  <p className="text-sm text-brand-100/68">{item.title}</p>
                   {item.href ? (
                     <a
                       href={item.href}
                       target={item.href.startsWith("http") ? "_blank" : undefined}
                       rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="text-white font-semibold hover:text-sky-400 transition-colors"
+                      className="font-semibold text-white transition-colors hover:text-brand-300"
                     >
                       {item.value}
                     </a>
@@ -120,9 +121,8 @@ export default function Contact() {
               </div>
             ))}
 
-            {/* Social Links */}
-            <div className="p-5 bg-slate-800 rounded-xl border border-slate-700">
-              <p className="text-slate-400 text-sm mb-3">Redes Sociais</p>
+            <div className="rounded-2xl border border-brand-800 bg-brand-900/85 p-5">
+              <p className="mb-3 text-sm text-brand-100/68">Redes Sociais</p>
               <div className="flex gap-3">
                 {[
                   { label: "LinkedIn", href: "https://linkedin.com/company/cpxlabs" },
@@ -134,7 +134,7 @@ export default function Contact() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 bg-slate-700 hover:bg-sky-500 text-slate-300 hover:text-white rounded-lg text-sm font-medium transition-all"
+                    className="rounded-full bg-brand-800 px-3 py-1.5 text-sm font-medium text-brand-100/82 transition-all hover:bg-brand-500 hover:text-white"
                   >
                     {social.label}
                   </a>
@@ -143,13 +143,12 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="bg-slate-800 rounded-2xl p-8 border border-slate-700">
+          <div className="rounded-3xl border border-brand-800 bg-brand-900/85 p-8">
             {submitted ? (
               <div className="flex flex-col items-center justify-center h-full text-center py-12">
-                <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mb-4">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-brand-500/16">
                   <svg
-                    className="w-8 h-8 text-emerald-400"
+                    className="h-8 w-8 text-brand-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -165,12 +164,12 @@ export default function Contact() {
                 <h3 className="text-xl font-bold text-white mb-2">
                   Mensagem enviada!
                 </h3>
-                <p className="text-slate-400">
+                <p className="text-brand-100/72">
                   Obrigado pelo contato. Nossa equipe retornará em breve.
                 </p>
                 <button
                   onClick={() => { setSubmitted(false); setError(null); }}
-                  className="mt-6 text-sky-400 hover:text-sky-300 text-sm font-medium"
+                  className="mt-6 text-sm font-medium text-brand-300 hover:text-brand-200"
                 >
                   Enviar outra mensagem
                 </button>
@@ -179,7 +178,7 @@ export default function Contact() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-slate-300 text-sm font-medium mb-1.5">
+                    <label className="mb-1.5 block text-sm font-medium text-brand-100/82">
                       Nome *
                     </label>
                     <input
@@ -189,11 +188,11 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       placeholder="Seu nome"
-                      className="w-full bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-sky-500 transition-colors"
+                      className="w-full rounded-xl border border-brand-700 bg-brand-800/78 px-4 py-3 text-sm text-white placeholder-brand-100/40 transition-colors focus:border-brand-400 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-300 text-sm font-medium mb-1.5">
+                    <label className="mb-1.5 block text-sm font-medium text-brand-100/82">
                       E-mail *
                     </label>
                     <input
@@ -203,12 +202,12 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       placeholder="seu@email.com"
-                      className="w-full bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-sky-500 transition-colors"
+                      className="w-full rounded-xl border border-brand-700 bg-brand-800/78 px-4 py-3 text-sm text-white placeholder-brand-100/40 transition-colors focus:border-brand-400 focus:outline-none"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-slate-300 text-sm font-medium mb-1.5">
+                  <label className="mb-1.5 block text-sm font-medium text-brand-100/82">
                     Empresa
                   </label>
                   <input
@@ -217,18 +216,18 @@ export default function Contact() {
                     value={form.company}
                     onChange={handleChange}
                     placeholder="Nome da sua empresa"
-                    className="w-full bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-sky-500 transition-colors"
+                    className="w-full rounded-xl border border-brand-700 bg-brand-800/78 px-4 py-3 text-sm text-white placeholder-brand-100/40 transition-colors focus:border-brand-400 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-300 text-sm font-medium mb-1.5">
+                  <label className="mb-1.5 block text-sm font-medium text-brand-100/82">
                     Serviço de interesse
                   </label>
                   <select
                     name="service"
                     value={form.service}
                     onChange={handleChange}
-                    className="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-sky-500 transition-colors"
+                    className="w-full rounded-xl border border-brand-700 bg-brand-800/78 px-4 py-3 text-sm text-white transition-colors focus:border-brand-400 focus:outline-none"
                   >
                     <option value="">Selecione um serviço</option>
                     <option value="desenvolvimento">Desenvolvimento de Software</option>
@@ -241,7 +240,7 @@ export default function Contact() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-300 text-sm font-medium mb-1.5">
+                  <label className="mb-1.5 block text-sm font-medium text-brand-100/82">
                     Mensagem *
                   </label>
                   <textarea
@@ -251,13 +250,13 @@ export default function Contact() {
                     required
                     rows={4}
                     placeholder="Descreva brevemente o seu projeto ou necessidade..."
-                    className="w-full bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-sky-500 transition-colors resize-none"
+                    className="w-full resize-none rounded-xl border border-brand-700 bg-brand-800/78 px-4 py-3 text-sm text-white placeholder-brand-100/40 transition-colors focus:border-brand-400 focus:outline-none"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-sky-500 hover:bg-sky-400 disabled:opacity-60 disabled:cursor-not-allowed text-white py-3.5 rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:shadow-sky-500/25"
+                  className="brand-glow w-full rounded-full bg-brand-500 py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-400 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loading ? "Enviando…" : "Enviar Mensagem"}
                 </button>
