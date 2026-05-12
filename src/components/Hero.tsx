@@ -7,8 +7,8 @@ export default function Hero() {
       className="relative min-h-screen flex items-center overflow-hidden bg-brand-950"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-32 right-[-8rem] h-[24rem] w-[24rem] rounded-full bg-brand-500/24 blur-3xl" />
-        <div className="absolute bottom-[-8rem] left-[-6rem] h-[28rem] w-[28rem] rounded-full bg-brand-700/30 blur-3xl" />
+        <div className="absolute -top-32 -right-32 h-[24rem] w-[24rem] rounded-full bg-brand-500/24 blur-3xl" />
+        <div className="absolute -bottom-32 -left-24 h-[28rem] w-[28rem] rounded-full bg-brand-700/30 blur-3xl" />
         <div className="absolute top-1/3 left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-brand-400/12 blur-3xl" />
       </div>
 

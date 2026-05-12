@@ -8,6 +8,7 @@
   --brand-200: #dcc6ff;
   --brand-300: #c29fff;
   --brand-400: #a164ff;
+  --brand-400-rgb: 161, 100, 255;
   --brand-500: #7f2cff;
   --brand-600: #5d13c8;
   --brand-700: #42058f;
@@ -34,7 +35,7 @@
 
 body {
   background:
-    radial-gradient(circle at top, rgba(161, 100, 255, 0.12), transparent 35%),
+    radial-gradient(circle at top, rgba(var(--brand-400-rgb), 0.12), transparent 35%),
     linear-gradient(180deg, #ffffff 0%, var(--background) 100%);
   color: var(--foreground);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
