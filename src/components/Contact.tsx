@@ -7,20 +7,20 @@ const contactInfo = [
   {
     icon: "📧",
     title: "E-mail",
-    value: "contato@cpxlabs.com.br",
-    href: "mailto:contato@cpxlabs.com.br",
+    value: "contato.cpxlabs@gmail.com",
+    href: "mailto:contato.cpxlabs@gmail.com",
   },
   {
     icon: "📞",
     title: "Telefone / WhatsApp",
-    value: "+55 (11) 9 9999-9999",
-    href: "https://wa.me/5511999999999",
+    value: "(21) 97554-2783",
+    href: "https://wa.me/5521975542783",
   },
   {
     icon: "📍",
     title: "Localização",
-    value: "São Paulo, SP — Brasil",
-    href: "https://maps.google.com/?q=São+Paulo+SP",
+    value: "Rio de Janeiro, RJ — Ramos, Complexo do Alemão",
+    href: "https://maps.google.com/?q=Ramos+Complexo+do+Alemão+Rio+de+Janeiro+RJ",
   },
   {
     icon: "⏰",

@@ -26,9 +26,9 @@ describe("Contact — rendering", () => {
     render(<Contact />);
     // "E-mail" appears as a contact-card label and as a form label — use getAllBy
     expect(screen.getAllByText(/^E-mail$/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText(/contato@cpxlabs\.com\.br/i)).toBeInTheDocument();
+    expect(screen.getByText(/contato\.cpxlabs@gmail\.com/i)).toBeInTheDocument();
     expect(screen.getByText(/Telefone \/ WhatsApp/i)).toBeInTheDocument();
-    expect(screen.getByText(/São Paulo, SP/i)).toBeInTheDocument();
+    expect(screen.getByText(/Rio de Janeiro, RJ/i)).toBeInTheDocument();
   });
 
   it("renders the contact form with all required fields", () => {
