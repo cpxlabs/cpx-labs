@@ -39,6 +39,7 @@ Os tokens ficam centralizados em `/src/app/globals.css` e são reutilizados por 
 | **Serviços** | 6 cards de serviços de TI (desenvolvimento, cloud, segurança, BI, IA e consultoria) |
 | **Quem Somos** | Missão, visão, valores, diferenciais e equipe de liderança |
 | **Contato** | Formulário funcional via `/api/contact` + canais de contato |
+| **Webhook WhatsApp** | Endpoint `/api/whatsapp/webhook` para validar o webhook da Meta, resumir textões com IA e encaminhar alertas |
 
 ## Pré-requisitos
 
@@ -101,6 +102,7 @@ npm run test:coverage
 | `Contact.test.tsx` | Renderização do formulário, envio com sucesso, erros, payload |
 | `Footer.test.tsx` | Links de navegação, redes sociais, copyright |
 | `api.contact.test.ts` | Validação, sanitização e respostas do endpoint `/api/contact` |
+| `api.whatsapp-webhook.test.ts` | Verificação do webhook, assinatura, filtros e fallback do `/api/whatsapp/webhook` |
 
 ## Estilo e branding
 
@@ -142,8 +144,51 @@ Configure as seguintes variáveis em **Vercel Dashboard → Project → Settings
 | `SMTP_PORT` | ⚠️ opcional | Porta SMTP (padrão: `587`) |
 | `SMTP_USER` | ⚠️ opcional | Usuário SMTP |
 | `SMTP_PASS` | ⚠️ opcional | Senha SMTP |
+| `WHATSAPP_TOKEN` | ⚠️ opcional | Token da WhatsApp Cloud API usado para enviar alertas |
+| `WHATSAPP_PHONE_NUMBER_ID` | ⚠️ opcional | Phone Number ID do número conectado na Meta |
+| `WHATSAPP_VERIFY_TOKEN` | ⚠️ opcional | Token usado pela Meta para validar o webhook |
+| `WHATSAPP_APP_SECRET` | ⚠️ opcional | App Secret da aplicação Meta para validar a assinatura |
+| `WHATSAPP_ADMIN_NUMBER` | ⚠️ opcional | Número que recebe os resumos gerados pelo webhook |
+| `WHATSAPP_BUSINESS_PHONE_NUMBER` | ⚠️ opcional | Número da empresa para ignorar mensagens originadas do próprio negócio |
+| `WHATSAPP_MIN_SUMMARY_CHARACTERS` | ⚠️ opcional | Mínimo de caracteres para tratar uma mensagem como “textão” |
+| `WHATSAPP_GRAPH_API_VERSION` | ⚠️ opcional | Versão da Graph API para envio de mensagens |
+| `WHATSAPP_AI_MODEL` | ⚠️ opcional | Modelo Gemini usado na geração do resumo |
+| `WHATSAPP_AI_TIMEOUT_MS` | ⚠️ opcional | Timeout máximo da chamada de IA antes de cair no fallback |
+| `GEMINI_API_KEY` | ⚠️ opcional | Chave de API do Gemini para resumir mensagens |
 
 > **Sem SMTP configurado**: as submissões do formulário são registradas nos logs da Vercel Function. Integre o `nodemailer` (ou outro provider como [Resend](https://resend.com)) no arquivo `src/app/api/contact/route.ts` para habilitar o envio real de e-mails.
+
+## Webhook do WhatsApp
+
+O projeto também expõe o endpoint `/api/whatsapp/webhook` para integrar a **WhatsApp Cloud API** ao App Router do Next.js.
+
+### Fluxo
+
+1. A Meta valida o endpoint com um `GET /api/whatsapp/webhook`.
+2. Mensagens novas chegam via `POST` assinado com `X-Hub-Signature-256`.
+3. O endpoint filtra apenas mensagens de texto acima do limite configurado.
+4. O texto é resumido com o Gemini; se a IA falhar, o sistema usa um fallback local.
+5. O resumo é enviado para `WHATSAPP_ADMIN_NUMBER` usando a própria Cloud API.
+
+### Configuração
+
+1. Preencha as variáveis `WHATSAPP_*` e `GEMINI_API_KEY` em `.env.local` ou na Vercel.
+2. Publique o projeto em uma URL pública HTTPS.
+3. No painel da Meta Developers, configure a URL do webhook como:
+
+   ```text
+   https://seu-dominio.com/api/whatsapp/webhook
+   ```
+
+4. Use o mesmo valor de `WHATSAPP_VERIFY_TOKEN` no painel da Meta.
+5. Faça um teste com o número sandbox/produção antes de liberar o fluxo definitivo.
+
+### Observações de segurança e operação
+
+- A rota valida a assinatura `X-Hub-Signature-256` com `WHATSAPP_APP_SECRET`.
+- Mensagens duplicadas são ignoradas em memória para reduzir reprocessamento e retries repetidos.
+- O resumo é encaminhado para um número administrador, sem responder automaticamente ao remetente final.
+- Se a IA estiver indisponível, o webhook continua funcionando com um resumo de fallback.
 
 ### Domínio customizado
 
@@ -156,6 +201,7 @@ cpx-labs/
 ├── src/
 │   ├── __tests__/
 │   │   ├── api.contact.test.ts   # Testes da route handler /api/contact
+│   │   ├── api.whatsapp-webhook.test.ts # Testes da route handler /api/whatsapp/webhook
 │   │   ├── About.test.tsx        # Testes do componente Quem Somos
 │   │   ├── Contact.test.tsx      # Testes do formulário de contato
 │   │   ├── Footer.test.tsx       # Testes do rodapé
@@ -163,18 +209,24 @@ cpx-labs/
 │   │   └── Services.test.tsx     # Testes da seção de serviços
 │   ├── app/
 │   │   ├── api/
-│   │   │   └── contact/
-│   │   │       └── route.ts      # Serverless function — formulário de contato
+│   │   │   ├── contact/
+│   │   │   │   └── route.ts      # Serverless function — formulário de contato
+│   │   │   └── whatsapp/
+│   │   │       └── webhook/
+│   │   │           └── route.ts  # Webhook da WhatsApp Cloud API
 │   │   ├── globals.css
 │   │   ├── layout.tsx            # Layout raiz (metadados SEO, lang="pt-BR")
 │   │   └── page.tsx              # Página principal (single-page)
-│   └── components/
+│   ├── components/
 │       ├── Header.tsx            # Navegação fixa e responsiva
 │       ├── Hero.tsx              # Seção de destaque
 │       ├── Services.tsx          # Grade de serviços
 │       ├── About.tsx             # Quem somos + equipe
 │       ├── Contact.tsx           # Formulário de contato
 │       └── Footer.tsx            # Rodapé
+│   └── lib/
+│       ├── ai-summary.ts         # Resumo/fallback via Gemini REST
+│       └── whatsapp.ts           # Configuração, parsing e envio via WhatsApp Cloud API
 ├── public/
 │   └── screenshots/              # Capturas de tela das seções
 ├── .env.example                  # Template de variáveis de ambiente
