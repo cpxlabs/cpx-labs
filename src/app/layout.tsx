@@ -1,19 +1,16 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
 export const metadata: Metadata = {
-  title: "CPX Labs — Consultoria em TI",
-  description:
-    "O CPX Labs é um grupo de consultoria em TI especializado em transformação digital, desenvolvimento de software, cloud, segurança e inteligência artificial.",
-  keywords: [
-    "consultoria TI",
-    "transformação digital",
-    "desenvolvimento de software",
-    "cloud",
-    "segurança da informação",
-    "inteligência artificial",
-    "CPX Labs",
-  ],
+  title: "Dashboard — CPX Labs",
+  description: "Sistema de gerenciamento interno CPX Labs.",
 };
 
 export default function RootLayout({
@@ -22,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="pt-BR" className={`${inter.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );
 }
