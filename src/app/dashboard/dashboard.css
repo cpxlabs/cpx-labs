@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+.dashboard-theme {
+  --background: #f8f9fa;
+  --foreground: #202124;
+  --color-brand-50: #e8f0fe;
+  --color-brand-100: #d2e3fc;
+  --color-brand-200: #aecbfa;
+  --color-brand-300: #8ab4f8;
+  --color-brand-400: #669df6;
+  --color-brand-500: #1a73e8;
+  --color-brand-600: #1967d2;
+  --color-brand-700: #185abc;
+  --color-brand-800: #174ea6;
+  --color-brand-900: #16428d;
+  --color-brand-950: #15387a;
+
+  --sidebar-width: 260px;
+  --header-height: 64px;
+
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.dashboard-theme .dashboard-card {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #dadce0;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.dashboard-theme .dashboard-card:hover {
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+}
+
+.dashboard-theme .sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  color: #5f6368;
+  font-weight: 500;
+  border-radius: 0 24px 24px 0;
+  margin-right: 12px;
+  transition: background-color 0.1s;
+}
+
+.dashboard-theme .sidebar-item:hover {
+  background-color: #f1f3f4;
+}
+
+.dashboard-theme .sidebar-item.active {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+}
