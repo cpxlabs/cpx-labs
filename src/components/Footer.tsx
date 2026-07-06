@@ -2,16 +2,17 @@ import Link from "next/link";
 
 const footerLinks = {
   Empresa: [
-    { label: "Quem Somos", href: "#quem-somos" },
-    { label: "Serviços", href: "#servicos" },
-    { label: "Contato", href: "#contato" },
+    { label: "Início", href: "/" },
+    { label: "Quem Somos", href: "/quem-somos" },
+    { label: "Serviços", href: "/servicos" },
+    { label: "Contato", href: "/contato" },
   ],
   Serviços: [
-    { label: "Desenvolvimento de Software", href: "#servicos" },
-    { label: "Cloud & Infraestrutura", href: "#servicos" },
-    { label: "Segurança da Informação", href: "#servicos" },
-    { label: "Business Intelligence", href: "#servicos" },
-    { label: "Inteligência Artificial", href: "#servicos" },
+    { label: "Desenvolvimento de Software", href: "/servicos" },
+    { label: "Cloud & Infraestrutura", href: "/servicos" },
+    { label: "Segurança da Informação", href: "/servicos" },
+    { label: "Business Intelligence", href: "/servicos" },
+    { label: "Inteligência Artificial", href: "/servicos" },
   ],
   Legal: [
     { label: "Política de Privacidade", href: "#" },
@@ -28,7 +29,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div className="lg:col-span-1">
-            <Link href="#inicio" className="mb-4 flex items-center gap-3">
+            <Link href="/" className="mb-4 flex items-center gap-3">
               <div className="brand-logo-mark h-10 w-10" />
               <div className="flex items-baseline gap-2 text-white">
                 <span className="text-base font-semibold uppercase tracking-[0.32em] text-brand-300">

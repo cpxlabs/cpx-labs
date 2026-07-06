@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const services = [
   {
     icon: "💻",
@@ -43,41 +45,41 @@ const services = [
   },
 ];
 
-export default function Services() {
+export default function ServicosPage() {
   return (
-    <section id="servicos" className="py-24 bg-brand-50">
+    <section className="min-h-screen bg-gradient-to-b from-brand-950 via-brand-900 to-brand-950 pt-24 pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 animate-fade-in-up">
-          <span className="mb-4 inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-800">
+        <div className="text-center mb-16 pt-16">
+          <span className="mb-4 inline-block rounded-full border border-brand-400/30 bg-brand-500/12 px-4 py-1.5 text-sm font-semibold text-brand-100">
             O que fazemos
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-950 mb-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-4">
             Nossas Soluções em TI
-          </h2>
-          <p className="text-brand-800/72 text-lg max-w-2xl mx-auto">
+          </h1>
+          <p className="text-brand-100/72 text-lg max-w-2xl mx-auto">
             Oferecemos um portfólio completo de serviços tecnológicos para
             impulsionar a transformação digital da sua empresa.
           </p>
         </div>
 
-        <div className="animate-stagger grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => (
             <div
               key={service.title}
-              className="group rounded-3xl border border-brand-200 bg-white p-8 shadow-sm transition-all duration-400 ease-out-expo hover:-translate-y-1.5 hover:border-brand-300 hover:shadow-xl hover:shadow-brand-500/15"
+              className="group rounded-3xl border border-brand-800 bg-brand-900/60 p-8 shadow-sm transition-all duration-400 ease-out-expo hover:-translate-y-1.5 hover:border-brand-600 hover:shadow-xl hover:shadow-brand-500/10"
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-2xl transition-transform duration-300 ease-spring group-hover:scale-110 group-hover:bg-brand-100">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-800/60 text-2xl transition-transform duration-300 ease-spring group-hover:scale-110 group-hover:bg-brand-700/60">
                 {service.icon}
               </div>
-              <h3 className="mb-3 text-xl font-bold text-brand-950 transition-colors duration-300 group-hover:text-brand-700">
+              <h2 className="mb-3 text-xl font-bold text-white transition-colors duration-300 group-hover:text-brand-300">
                 {service.title}
-              </h3>
-              <p className="mb-5 text-sm leading-relaxed text-brand-800/72">
+              </h2>
+              <p className="mb-5 text-sm leading-relaxed text-brand-100/68">
                 {service.description}
               </p>
               <ul className="space-y-1.5">
                 {service.highlights.map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-sm text-brand-900/78">
+                  <li key={item} className="flex items-center gap-2 text-sm text-brand-200/78">
                     <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
                     {item}
                   </li>
@@ -85,6 +87,18 @@ export default function Services() {
               </ul>
             </div>
           ))}
+        </div>
+
+        <div className="mt-16 text-center">
+          <p className="text-brand-100/68 mb-6">
+            Quer saber como podemos ajudar o seu negócio?
+          </p>
+          <Link
+            href="/contato"
+            className="inline-block rounded-full bg-brand-500 px-8 py-4 text-lg font-semibold text-white transition-all duration-300 ease-spring hover:bg-brand-400 brand-glow active:scale-[0.97]"
+          >
+            Falar com Consultor
+          </Link>
         </div>
       </div>
     </section>

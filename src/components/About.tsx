@@ -70,13 +70,15 @@ export default function About() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        <div className="animate-stagger grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {values.map((item) => (
             <div
               key={item.title}
-              className="rounded-3xl border border-brand-100 bg-brand-50 p-8 text-center"
+              className="rounded-3xl border border-brand-100 bg-brand-50 p-8 text-center shadow-sm transition-all duration-400 ease-out-expo hover:-translate-y-1 hover:border-brand-200 hover:shadow-lg hover:shadow-brand-500/8"
             >
-              <div className="text-4xl mb-4">{item.icon}</div>
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-3xl shadow-sm transition-transform duration-300 ease-spring group-hover:scale-110">
+                {item.icon}
+              </div>
               <h3 className="mb-3 text-xl font-bold text-brand-950">
                 {item.title}
               </h3>
@@ -125,7 +127,7 @@ export default function About() {
               ))}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="animate-stagger grid grid-cols-2 gap-4">
             {[
               { number: "2014", label: "Fundação" },
               { number: "50+", label: "Projetos" },
@@ -134,7 +136,7 @@ export default function About() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-3xl bg-brand-950 p-6 text-center"
+                className="rounded-3xl bg-brand-950 p-6 text-center transition-transform duration-300 ease-spring hover:scale-[1.03] hover:shadow-xl hover:shadow-brand-950/30"
               >
                 <p className="text-3xl font-extrabold text-brand-300">
                   {stat.number}
@@ -149,14 +151,14 @@ export default function About() {
           <h3 className="text-2xl sm:text-3xl font-extrabold text-brand-950 text-center mb-10">
             Nossa Liderança
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="animate-stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {team.map((member) => (
               <div
                 key={member.name}
-                className="rounded-3xl border border-brand-100 p-6 text-center transition-shadow hover:shadow-lg hover:shadow-brand-500/10"
+                className="rounded-3xl border border-brand-100 p-6 text-center transition-all duration-400 ease-out-expo hover:-translate-y-1 hover:border-brand-200 hover:shadow-lg hover:shadow-brand-500/10"
               >
                 <div
-                  className={`w-16 h-16 ${member.color} rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-4`}
+                  className={`w-16 h-16 ${member.color} rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 transition-transform duration-300 ease-spring group-hover:scale-110`}
                 >
                   {member.initials}
                 </div>

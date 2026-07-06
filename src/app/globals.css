@@ -14,6 +14,13 @@
   --brand-800: #2c005f;
   --brand-900: #200047;
   --brand-950: #16002f;
+
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --radius-card: 1.5rem;
+  --radius-input: 0.75rem;
+  --radius-pill: 9999px;
 }
 
 @theme inline {
@@ -30,6 +37,69 @@
   --color-brand-800: var(--brand-800);
   --color-brand-900: var(--brand-900);
   --color-brand-950: var(--brand-950);
+
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-fade-in: fade-in 0.6s var(--ease-out-expo) both;
+  --animate-fade-in-up: fade-in-up 0.6s var(--ease-out-expo) both;
+  --animate-fade-in-down: fade-in-down 0.4s var(--ease-out-expo) both;
+  --animate-scale-in: scale-in 0.4s var(--ease-spring) both;
+  --animate-slide-down: slide-down 0.3s var(--ease-out-expo) both;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-pulse-subtle: pulse-subtle 2s ease-in-out infinite;
+  --animate-spin-slow: spin 1.5s linear infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-0.75rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-0.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to { background-position: 200% center; }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+@keyframes check-draw {
+  to { stroke-dashoffset: 0; }
 }
 
 body {
@@ -47,11 +117,18 @@ body {
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 ::selection {
   background: color-mix(in srgb, var(--brand-400) 28%, white);
   color: var(--brand-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-400);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 .brand-logo-mark {
@@ -65,6 +142,12 @@ html {
     radial-gradient(circle at 54% 55%, rgba(127, 44, 255, 0.6) 0 18%, transparent 55%),
     linear-gradient(180deg, var(--brand-950) 0%, var(--brand-900) 42%, var(--brand-700) 72%, var(--brand-500) 100%);
   box-shadow: 0 14px 32px rgba(22, 0, 47, 0.32);
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+}
+
+.brand-logo-mark:hover {
+  transform: scale(1.08);
+  box-shadow: 0 20px 48px rgba(22, 0, 47, 0.42);
 }
 
 .brand-logo-mark::before {
@@ -92,4 +175,24 @@ html {
 
 .brand-glow {
   box-shadow: 0 18px 45px rgba(93, 19, 200, 0.22);
+}
+
+.brand-glow:hover {
+  box-shadow: 0 22px 55px rgba(93, 19, 200, 0.35);
+}
+
+.animate-stagger > :nth-child(1) { animation-delay: 0ms; }
+.animate-stagger > :nth-child(2) { animation-delay: 80ms; }
+.animate-stagger > :nth-child(3) { animation-delay: 160ms; }
+.animate-stagger > :nth-child(4) { animation-delay: 240ms; }
+.animate-stagger > :nth-child(5) { animation-delay: 320ms; }
+.animate-stagger > :nth-child(6) { animation-delay: 400ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
