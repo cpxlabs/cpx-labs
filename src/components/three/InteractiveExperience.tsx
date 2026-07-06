@@ -50,6 +50,56 @@ function FloatingParticles({ count = 200 }) {
   );
 }
 
+function FloatingShapes({ count = 10 }) {
+  const shapes = useMemo(() => {
+    return Array.from({ length: count }).map(() => ({
+      position: [
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 10,
+      ] as [number, number, number],
+      rotation: [
+        Math.random() * Math.PI,
+        Math.random() * Math.PI,
+        Math.random() * Math.PI,
+      ] as [number, number, number],
+      scale: 0.1 + Math.random() * 0.2,
+      speed: 0.5 + Math.random() * 1.5,
+      type: Math.floor(Math.random() * 3),
+    }));
+  }, [count]);
+
+  return (
+    <>
+      {shapes.map((shape, i) => (
+        <Float
+          key={i}
+          position={shape.position}
+          rotation={shape.rotation}
+          speed={shape.speed}
+          rotationIntensity={2}
+          floatIntensity={2}
+        >
+          <mesh scale={shape.scale}>
+            {shape.type === 0 && <octahedronGeometry />}
+            {shape.type === 1 && <tetrahedronGeometry />}
+            {shape.type === 2 && <boxGeometry args={[1, 1, 1]} />}
+            <meshPhysicalMaterial
+              color={BRAND_COLORS.purple}
+              emissive={BRAND_COLORS.dark}
+              emissiveIntensity={0.5}
+              metalness={0.8}
+              roughness={0.2}
+              transparent
+              opacity={0.6}
+            />
+          </mesh>
+        </Float>
+      ))}
+    </>
+  );
+}
+
 export default function InteractiveExperience() {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
@@ -107,6 +157,7 @@ export default function InteractiveExperience() {
       <directionalLight position={[-3, 2, -3]} intensity={0.3} color="#c29fff" />
 
       <FloatingParticles count={250} />
+      <FloatingShapes count={15} />
 
       <group ref={groupRef}>
         <Float
@@ -131,6 +182,28 @@ export default function InteractiveExperience() {
               transparent
               opacity={0.88}
               wireframe={active}
+            />
+          </mesh>
+
+          {/* Saturn-like Rings */}
+          <mesh rotation={[Math.PI / 2.2, 0.4, 0]}>
+            <torusGeometry args={[2.1, 0.015, 16, 100]} />
+            <meshPhysicalMaterial
+              color={BRAND_COLORS.light}
+              emissive={BRAND_COLORS.purple}
+              emissiveIntensity={0.5}
+              transparent
+              opacity={0.4}
+            />
+          </mesh>
+          <mesh rotation={[Math.PI / 2.2, 0.4, 0]}>
+            <torusGeometry args={[2.3, 0.01, 16, 100]} />
+            <meshPhysicalMaterial
+              color={BRAND_COLORS.light}
+              emissive={BRAND_COLORS.purple}
+              emissiveIntensity={0.3}
+              transparent
+              opacity={0.2}
             />
           </mesh>
         </Float>
