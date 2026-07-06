@@ -7,8 +7,7 @@ export default function ContactForm() {
   const [form, setForm] = useState<ContactPayload>({
     name: "",
     email: "",
-    company: "",
-    service: "",
+    subject: "",
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
@@ -74,7 +73,7 @@ export default function ContactForm() {
           Obrigado pelo contato. Nossa equipe retornará em breve.
         </p>
         <button
-          onClick={() => { setSubmitted(false); setError(null); setForm({ name: "", email: "", company: "", service: "", message: "" }); }}
+          onClick={() => { setSubmitted(false); setError(null); setForm({ name: "", email: "", subject: "", message: "" }); }}
           className="mt-6 rounded-full border border-brand-600 px-5 py-2 text-sm font-medium text-brand-300 transition-all hover:bg-brand-800 hover:text-white"
         >
           Enviar outra mensagem
@@ -117,36 +116,16 @@ export default function ContactForm() {
       </div>
       <div>
         <label className="mb-1.5 block text-sm font-medium text-brand-100/82">
-          Empresa
+          Assunto
         </label>
         <input
           type="text"
-          name="company"
-          value={form.company}
+          name="subject"
+          value={form.subject || ""}
           onChange={handleChange}
-          placeholder="Nome da sua empresa"
+          placeholder="Como podemos ajudar?"
           className="w-full rounded-xl border border-brand-700 bg-brand-800/50 px-4 py-3 text-sm text-white placeholder-brand-100/40 transition-all duration-300 focus:border-brand-400 focus:ring-2 focus:ring-brand-400/20 focus:outline-none"
         />
-      </div>
-      <div>
-        <label className="mb-1.5 block text-sm font-medium text-brand-100/82">
-          Serviço de interesse
-        </label>
-        <select
-          name="service"
-          value={form.service}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-brand-700 bg-brand-800/50 px-4 py-3 text-sm text-white transition-all duration-300 focus:border-brand-400 focus:ring-2 focus:ring-brand-400/20 focus:outline-none"
-        >
-          <option value="">Selecione um serviço</option>
-          <option value="desenvolvimento">Desenvolvimento de Software</option>
-          <option value="cloud">Cloud & Infraestrutura</option>
-          <option value="seguranca">Segurança da Informação</option>
-          <option value="dados">Business Intelligence & Dados</option>
-          <option value="ia">Inteligência Artificial</option>
-          <option value="consultoria">Consultoria & Arquitetura</option>
-          <option value="outro">Outro</option>
-        </select>
       </div>
       <div>
         <label className="mb-1.5 block text-sm font-medium text-brand-100/82">
@@ -158,7 +137,7 @@ export default function ContactForm() {
           onChange={handleChange}
           required
           rows={4}
-          placeholder="Descreva brevemente o seu projeto ou necessidade..."
+          placeholder="Descreva seu projeto..."
           className="w-full resize-none rounded-xl border border-brand-700 bg-brand-800/50 px-4 py-3 text-sm text-white placeholder-brand-100/40 transition-all duration-300 focus:border-brand-400 focus:ring-2 focus:ring-brand-400/20 focus:outline-none"
         />
       </div>
@@ -176,7 +155,7 @@ export default function ContactForm() {
             Enviando…
           </>
         ) : (
-          "Enviar Mensagem"
+          "Falar com um Especialista"
         )}
       </button>
       {error && (

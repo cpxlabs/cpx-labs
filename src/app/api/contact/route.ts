@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export interface ContactPayload {
   name: string;
   email: string;
+  subject?: string;
   company?: string;
   service?: string;
   message: string;
@@ -31,6 +32,7 @@ export async function POST(req: NextRequest) {
 
   const name = sanitize(body.name);
   const email = sanitize(body.email);
+  const subject = sanitize(body.subject);
   const company = sanitize(body.company);
   const service = sanitize(body.service);
   const message = sanitize(body.message);
@@ -83,6 +85,7 @@ export async function POST(req: NextRequest) {
     console.info("[contact-form] New submission (SMTP not configured):", {
       name,
       email,
+      subject,
       company,
       service,
       message,
