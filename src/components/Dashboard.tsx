@@ -147,6 +147,7 @@ export default function Dashboard() {
                   title="Deploy realizado"
                   desc="Ambiente de staging atualizado"
                   time="Ontem"
+                  isLast
                 />
               </div>
             </div>
