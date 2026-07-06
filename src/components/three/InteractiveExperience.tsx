@@ -103,7 +103,6 @@ function FloatingShapes({ count = 10 }) {
 function Planet({ active, hovered, onClick, onPointerOver, onPointerOut }: any) {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
-  const texture = useTexture("/cosmic-bg.png");
 
   useFrame((state) => {
     if (meshRef.current) {
@@ -127,14 +126,13 @@ function Planet({ active, hovered, onClick, onPointerOver, onPointerOut }: any) 
       >
         <sphereGeometry args={[1.2, 64, 64]} />
         <meshPhysicalMaterial
-          map={texture}
           color={active ? BRAND_COLORS.light : BRAND_COLORS.purple}
           emissive={active ? BRAND_COLORS.purple : BRAND_COLORS.dark}
           emissiveIntensity={hovered ? 0.6 : 0.2}
-          metalness={0.8}
-          roughness={0.2}
-          bumpMap={texture}
-          bumpScale={0.05}
+          metalness={0.9}
+          roughness={0.1}
+          clearcoat={1}
+          clearcoatRoughness={0.1}
         />
       </mesh>
 
