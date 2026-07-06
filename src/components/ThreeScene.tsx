@@ -31,6 +31,7 @@ export default function ThreeScene({
     >
       <SceneCanvas
         fallback={<LoadingFallback />}
+        style={{ pointerEvents: "auto" }}
         {...canvasProps}
       >
         <Experience />
