@@ -2,7 +2,7 @@
 
 import { useRef, useState, useMemo, Suspense } from "react";
 import { useFrame, type ThreeEvent } from "@react-three/fiber";
-import { Float, OrbitControls, useTexture } from "@react-three/drei";
+import { Float, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
 const BRAND_COLORS = {
@@ -11,23 +11,41 @@ const BRAND_COLORS = {
   dark: new THREE.Color("#5d13c8"),
 };
 
-function FloatingParticles({ count = 200 }) {
+function FloatingParticles({ count = 250 }) {
   const pointsRef = useRef<THREE.Points>(null);
 
-  const particlesPosition = useMemo(() => {
-    const positions = new Float32Array(count * 3);
+  // Store original positions for reference in wave calculations
+  const [originalPositions, particlesPosition] = useMemo(() => {
+    const orig = new Float32Array(count * 3);
+    const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 12;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 12;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 12;
+      const x = (Math.random() - 0.5) * 12;
+      const y = (Math.random() - 0.5) * 12;
+      const z = (Math.random() - 0.5) * 12;
+      orig[i * 3] = x;
+      orig[i * 3 + 1] = y;
+      orig[i * 3 + 2] = z;
+      pos[i * 3] = x;
+      pos[i * 3 + 1] = y;
+      pos[i * 3 + 2] = z;
     }
-    return positions;
+    return [orig, pos];
   }, [count]);
 
   useFrame((state) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y = state.clock.getElapsedTime() * 0.04;
-      pointsRef.current.rotation.x = state.clock.getElapsedTime() * 0.02;
+      // Slow background rotation
+      pointsRef.current.rotation.y = state.clock.getElapsedTime() * 0.02;
+      pointsRef.current.rotation.x = state.clock.getElapsedTime() * 0.01;
+      
+      // Floating sinusoidal wave motion
+      const positions = pointsRef.current.geometry.attributes.position.array as Float32Array;
+      const time = state.clock.getElapsedTime();
+      for (let i = 0; i < count; i++) {
+        positions[i * 3 + 1] = originalPositions[i * 3 + 1] + Math.sin(time + originalPositions[i * 3]) * 0.15;
+        positions[i * 3] = originalPositions[i * 3] + Math.cos(time * 0.5 + originalPositions[i * 3 + 2]) * 0.1;
+      }
+      pointsRef.current.geometry.attributes.position.needsUpdate = true;
     }
   });
 
@@ -40,11 +58,11 @@ function FloatingParticles({ count = 200 }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.05}
+        size={0.06}
         color="#c29fff"
         sizeAttenuation
         transparent
-        opacity={0.4}
+        opacity={0.35}
       />
     </points>
   );
@@ -100,24 +118,73 @@ function FloatingShapes({ count = 10 }) {
   );
 }
 
-function Planet({ active, hovered, onClick, onPointerOver, onPointerOut }: any) {
+function Planet({ active, hovered, onClick, onPointerOver, onPointerOut, dragging, setDragging }: any) {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
+  const materialRef = useRef<THREE.MeshPhysicalMaterial>(null);
+  
+  const currentScale = useRef(1.0);
+  const planeRef = useRef(new THREE.Plane(new THREE.Vector3(0, 0, 1), 0));
+  const planeIntersection = useRef(new THREE.Vector3());
 
   useFrame((state) => {
+    const time = state.clock.getElapsedTime();
+
     if (meshRef.current) {
       meshRef.current.rotation.y += 0.005;
       meshRef.current.rotation.z += 0.002;
     }
 
     if (groupRef.current) {
-      const s = active ? 1.25 : 1;
-      groupRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1);
+      // Lerp transition for target scale
+      const targetScale = active ? 1.35 : (hovered ? 1.15 : 1.0);
+      currentScale.current = THREE.MathUtils.lerp(currentScale.current, targetScale, 0.1);
+      
+      // Organic pulsation
+      const pulseFactor = Math.sin(time * 2.5) * 0.02;
+      const s = currentScale.current + pulseFactor;
+      groupRef.current.scale.set(s, s, s);
+
+      // Drag/move calculation projected on standard camera depth plane
+      if (dragging) {
+        state.raycaster.ray.intersectPlane(planeRef.current, planeIntersection.current);
+        groupRef.current.position.lerp(planeIntersection.current, 0.2);
+      }
+    }
+
+    // Pulsate emissive intensity dynamically
+    if (materialRef.current) {
+      const baseEmissive = active ? 0.5 : 0.2;
+      const pulse = Math.sin(time * 3.5) * 0.08;
+      materialRef.current.emissiveIntensity = baseEmissive + pulse + (hovered ? 0.3 : 0);
     }
   });
 
+  const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation();
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    setDragging(true);
+  };
+
+  const handlePointerUp = (e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation();
+    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    setDragging(false);
+  };
+
+  const handlePointerMove = (e: ThreeEvent<PointerEvent>) => {
+    if (dragging) {
+      e.stopPropagation();
+    }
+  };
+
   return (
-    <group ref={groupRef}>
+    <group
+      ref={groupRef}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerMove={handlePointerMove}
+    >
       <mesh
         ref={meshRef}
         onPointerOver={onPointerOver}
@@ -126,9 +193,9 @@ function Planet({ active, hovered, onClick, onPointerOver, onPointerOut }: any) 
       >
         <sphereGeometry args={[1.2, 64, 64]} />
         <meshPhysicalMaterial
+          ref={materialRef}
           color={active ? BRAND_COLORS.light : BRAND_COLORS.purple}
           emissive={active ? BRAND_COLORS.purple : BRAND_COLORS.dark}
-          emissiveIntensity={hovered ? 0.6 : 0.2}
           metalness={0.9}
           roughness={0.1}
           clearcoat={1}
@@ -148,7 +215,7 @@ function Planet({ active, hovered, onClick, onPointerOver, onPointerOut }: any) 
         />
       </mesh>
 
-      {/* Saturn-like Rings - More refined */}
+      {/* Saturn-like Rings */}
       <group rotation={[Math.PI / 2.2, 0.4, 0]}>
         {[2.0, 2.1, 2.3, 2.5].map((radius, i) => (
           <mesh key={radius}>
@@ -171,6 +238,7 @@ export default function InteractiveExperience() {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const [active, setActive] = useState(false);
+  const [dragging, setDragging] = useState(false);
 
   const handlePointerOver = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
@@ -189,10 +257,10 @@ export default function InteractiveExperience() {
   };
 
   useFrame((state) => {
-    if (groupRef.current) {
-      // Gently rotate group towards the normalized mouse pointer
-      const targetX = state.pointer.x * 0.35;
-      const targetY = state.pointer.y * 0.35;
+    // Mouse Interaction: Rotate group towards cursor position (disabled while dragging for precision)
+    if (groupRef.current && !dragging) {
+      const targetX = state.pointer.x * 0.4;
+      const targetY = state.pointer.y * 0.4;
       groupRef.current.rotation.y += (targetX - groupRef.current.rotation.y) * 0.08;
       groupRef.current.rotation.x += (-targetY - groupRef.current.rotation.x) * 0.08;
     }
@@ -200,7 +268,9 @@ export default function InteractiveExperience() {
 
   return (
     <>
+      {/* Enable orbit zoom/pan only when NOT dragging the planet */}
       <OrbitControls
+        enabled={!dragging}
         enableZoom={true}
         enablePan={true}
         rotateSpeed={0.5}
@@ -222,11 +292,14 @@ export default function InteractiveExperience() {
           speed={2}
           rotationIntensity={0.4}
           floatIntensity={1}
+          enabled={!dragging}
         >
           <Suspense fallback={null}>
             <Planet
               active={active}
               hovered={hovered}
+              dragging={dragging}
+              setDragging={setDragging}
               onClick={handleClick}
               onPointerOver={handlePointerOver}
               onPointerOut={handlePointerOut}
