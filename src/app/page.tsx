@@ -26,7 +26,14 @@ export default function HomePage() {
           <div className="lg:max-w-3xl">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 animate-fade-in-up">
               Engenharia de Precisão para{" "}
-              <span className="bg-gradient-to-r from-brand-200 via-brand-400 to-brand-600 bg-clip-text text-transparent">
+              <span
+                style={{
+                  backgroundImage: "linear-gradient(to right, #dcc6ff, #a164ff, #c29fff)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  display: "inline-block",
+                }}
+              >
                 Transformação Digital
               </span>
             </h1>
