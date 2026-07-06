@@ -10,8 +10,8 @@ export default function HomePage() {
           <div className="absolute -top-32 -right-32 h-[24rem] w-[24rem] rounded-full bg-brand-500/20 blur-3xl animate-pulse-subtle" />
           <div className="absolute -bottom-32 -left-24 h-[28rem] w-[28rem] rounded-full bg-brand-700/24 blur-3xl animate-pulse-subtle" style={{ animationDelay: "1s" }} />
           <div className="absolute top-1/3 left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-brand-400/10 blur-3xl animate-pulse-subtle" style={{ animationDelay: "2s" }} />
-          <ThreeScene containerClassName="absolute right-10 top-1/2 -translate-y-1/2 w-[450px] h-[450px] hidden lg:block opacity-60" />
         </div>
+        <ThreeScene containerClassName="absolute right-10 top-1/2 -translate-y-1/2 w-[450px] h-[450px] hidden lg:block opacity-60 z-20 pointer-events-auto" />
 
         <div
           className="absolute inset-0 opacity-[0.02]"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useMemo, Suspense } from "react";
+import { useRef, useState, useMemo, Suspense, useEffect } from "react";
 import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import { Float, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -127,6 +127,19 @@ function Planet({ active, hovered, onClick, onPointerOver, onPointerOut, draggin
   const planeRef = useRef(new THREE.Plane(new THREE.Vector3(0, 0, 1), 0));
   const planeIntersection = useRef(new THREE.Vector3());
 
+  // Global mouseup release trigger
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      setDragging(false);
+    };
+    window.addEventListener("mouseup", handleGlobalMouseUp);
+    window.addEventListener("touchend", handleGlobalMouseUp);
+    return () => {
+      window.removeEventListener("mouseup", handleGlobalMouseUp);
+      window.removeEventListener("touchend", handleGlobalMouseUp);
+    };
+  }, [setDragging]);
+
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
 
@@ -148,7 +161,7 @@ function Planet({ active, hovered, onClick, onPointerOver, onPointerOut, draggin
       // Drag/move calculation projected on standard camera depth plane
       if (dragging) {
         state.raycaster.ray.intersectPlane(planeRef.current, planeIntersection.current);
-        groupRef.current.position.lerp(planeIntersection.current, 0.2);
+        groupRef.current.position.lerp(planeIntersection.current, 0.25);
       }
     }
 
@@ -162,28 +175,13 @@ function Planet({ active, hovered, onClick, onPointerOver, onPointerOut, draggin
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
     setDragging(true);
-  };
-
-  const handlePointerUp = (e: ThreeEvent<PointerEvent>) => {
-    e.stopPropagation();
-    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-    setDragging(false);
-  };
-
-  const handlePointerMove = (e: ThreeEvent<PointerEvent>) => {
-    if (dragging) {
-      e.stopPropagation();
-    }
   };
 
   return (
     <group
       ref={groupRef}
       onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerMove={handlePointerMove}
     >
       <mesh
         ref={meshRef}
@@ -243,7 +241,7 @@ export default function InteractiveExperience() {
   const handlePointerOver = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
     setHovered(true);
-    document.body.style.cursor = "pointer";
+    document.body.style.cursor = "grab";
   };
 
   const handlePointerOut = () => {
@@ -273,6 +271,8 @@ export default function InteractiveExperience() {
         enabled={!dragging}
         enableZoom={true}
         enablePan={true}
+        minDistance={3.5}
+        maxDistance={10}
         rotateSpeed={0.5}
         dampingFactor={0.05}
         minPolarAngle={0}
