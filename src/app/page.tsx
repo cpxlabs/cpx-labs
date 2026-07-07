@@ -11,7 +11,7 @@ export default function HomePage() {
           <div className="absolute -bottom-32 -left-24 h-[28rem] w-[28rem] rounded-full bg-brand-700/24 blur-3xl animate-pulse-subtle" style={{ animationDelay: "1s" }} />
           <div className="absolute top-1/3 left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-brand-400/10 blur-3xl animate-pulse-subtle" style={{ animationDelay: "2s" }} />
         </div>
-        <ThreeScene containerClassName="absolute right-10 top-1/2 -translate-y-1/2 w-[450px] h-[450px] hidden lg:block opacity-60 z-20 pointer-events-auto" />
+        <ThreeScene containerClassName="absolute inset-0 w-full h-full opacity-60 z-0 pointer-events-auto" />
 
         <div
           className="absolute inset-0 opacity-[0.02]"
