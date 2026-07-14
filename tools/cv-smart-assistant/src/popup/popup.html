@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV Smart Assistant</title>
+  <link rel="stylesheet" href="popup.css" />
+  <script src="../vendors/pdf.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>CV Smart Assistant</h1>
+      <button id="themeToggle" class="theme-btn">🌙</button>
+    </div>
+
+    <div id="selectPdf" class="drop-zone">
+      <div class="drop-zone-content">
+        <span class="drop-icon">📄</span>
+        <p>Drop PDF here or click to browse</p>
+      </div>
+    </div>
+    <input type="file" id="fileInput" accept=".pdf" hidden />
+
+    <div id="status" class="status info">Waiting for CV...</div>
+
+    <section>
+      <div class="section-header">
+        <h2>Extracted Data</h2>
+      </div>
+      <div class="field">
+        <label>Name <span class="edit-icon" data-field="name">✏️</span></label>
+        <input type="text" id="field-name" />
+      </div>
+      <div class="field">
+        <label>Email <span class="edit-icon" data-field="email">✏️</span></label>
+        <input type="text" id="field-email" />
+      </div>
+      <div class="field">
+        <label>Phone <span class="edit-icon" data-field="phone">✏️</span></label>
+        <input type="text" id="field-phone" />
+      </div>
+      <div class="field">
+        <label>LinkedIn <span class="edit-icon" data-field="linkedin">✏️</span></label>
+        <input type="text" id="field-linkedin" />
+      </div>
+      <div class="field">
+        <label>GitHub <span class="edit-icon" data-field="github">✏️</span></label>
+        <input type="text" id="field-github" />
+      </div>
+      <div class="field">
+        <label>Skills <span class="edit-icon" data-field="skills">✏️</span></label>
+        <input type="text" id="field-skills" placeholder="e.g. JavaScript, React, Python" />
+      </div>
+      <div class="field">
+        <label>Education <span class="edit-icon" data-field="education">✏️</span></label>
+        <textarea id="field-education" rows="2" placeholder="e.g. BSc Computer Science"></textarea>
+      </div>
+      <div class="field">
+        <label>Experience <span class="edit-icon" data-field="experience">✏️</span></label>
+        <textarea id="field-experience" rows="3" placeholder="e.g. Senior Software Engineer at Acme"></textarea>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header collapsible" data-target="historyList">
+        <h2>Recent Files</h2>
+        <span class="collapse-arrow">▶</span>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+
+    <section>
+      <div class="section-header">
+        <h2>AutoFill</h2>
+      </div>
+      <input type="hidden" id="targetUrl" />
+      <div class="site-info">Detected site: <span id="siteName">Unknown site</span></div>
+      <button id="fillForm" class="btn primary">AutoFill Form on Current Page</button>
+      <div id="fillResult" class="fill-result"></div>
+    </section>
+
+    <section>
+      <div class="section-header">
+        <h2>Draft Cover Email</h2>
+      </div>
+      <div class="field">
+        <label>Job Title &amp; Company</label>
+        <input type="text" id="jobInfo" placeholder="e.g. Software Engineer at Acme" />
+      </div>
+      <button id="draftEmail" class="btn accent">Draft Email</button>
+      <textarea id="emailOutput" rows="6" readonly></textarea>
+    </section>
+
+    <section>
+      <div class="section-header collapsible" data-target="linkedinFilterPanel">
+        <h2>LinkedIn Filter</h2>
+        <span class="collapse-arrow">▶</span>
+      </div>
+      <div id="linkedinFilterPanel" class="settings-panel" style="display:flex;flex-direction:column;">
+        <div class="setting-row">
+          <label class="toggle-label">
+            <span>Enable LinkedIn job filtering</span>
+            <label class="switch">
+              <input type="checkbox" id="linkedinFilterToggle" checked />
+              <span class="slider"></span>
+            </label>
+          </label>
+        </div>
+        <div class="field">
+          <label>Keywords (comma-separated)</label>
+          <input type="text" id="linkedinKeywords" placeholder="remoto, home office, 100% remoto" />
+        </div>
+        <div class="field">
+          <label>Highlight color</label>
+          <input type="color" id="linkedinHighlightColor" value="#e6f4ea" />
+        </div>
+        <p id="linkedinFilterStatus" class="status info"></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header collapsible" data-target="savedJobsPanel">
+        <h2>Saved Jobs <span id="savedJobsCount">(0)</span></h2>
+        <span class="collapse-arrow">▶</span>
+      </div>
+      <div id="savedJobsPanel" style="display:flex;flex-direction:column;">
+        <div id="savedJobsList" class="history-list"></div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button id="exportJSONBtn" class="btn small">Export JSON</button>
+          <button id="exportCSVBtn" class="btn small">Export CSV</button>
+          <button id="clearJobsBtn" class="btn small" style="background:var(--accent-red);color:#fff;">Clear All</button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header collapsible" data-target="settingsPanel">
+        <h2>Settings</h2>
+        <span class="collapse-arrow">▶</span>
+      </div>
+      <div id="settingsPanel" class="settings-panel">
+        <div class="setting-row">
+          <label class="toggle-label">
+            <span>Encrypt stored data</span>
+            <label class="switch">
+              <input type="checkbox" id="encryptionToggle" />
+              <span class="slider"></span>
+            </label>
+          </label>
+        </div>
+        <div id="passwordSection" class="password-section" style="display:none;">
+          <div class="field">
+            <label>Encryption Password</label>
+            <input type="password" id="passwordInput" placeholder="Enter encryption password" />
+          </div>
+          <div class="field">
+            <label>Confirm Password</label>
+            <input type="password" id="passwordConfirm" placeholder="Confirm password" />
+          </div>
+          <button id="setPasswordBtn" class="btn small primary">Set Password</button>
+          <button id="clearPasswordBtn" class="btn small" style="display:none;background:var(--accent-red);color:#fff;">Clear Password</button>
+          <p id="passwordStatus" class="status info" style="margin-top:4px;"></p>
+        </div>
+        <div class="setting-row">
+          <label class="toggle-label">
+            <span>Auto-fill multi-step forms</span>
+            <label class="switch">
+              <input type="checkbox" id="autoFillToggle" checked />
+              <span class="slider"></span>
+            </label>
+          </label>
+        </div>
+        <div class="setting-row">
+          <label>Resume File</label>
+          <button id="uploadResumeBtn" class="btn small primary">Upload Resume</button>
+          <input type="file" id="resumeFileInput" accept=".pdf,.doc,.docx" hidden />
+          <span id="resumeStatus" class="resume-status">No file attached</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="../lib/parser.js"></script>
+  <script src="../lib/templates.js"></script>
+  <script src="../lib/storage.js"></script>
+  <script src="../lib/linkedinStorage.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

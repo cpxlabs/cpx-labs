@@ -1,0 +1,20 @@
+{
+  "name": "cv-smart-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "test:e2e": "node tests/e2e.test.js",
+    "test:watch": "jest --watch",
+    "clean": "rm -rf dist",
+    "build": "node scripts/build.js",
+    "zip": "node scripts/zip.js"
+  },
+  "devDependencies": {
+    "archiver": "^8.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "puppeteer": "^22.0.0",
+    "terser": "^5.48.0"
+  }
+}
