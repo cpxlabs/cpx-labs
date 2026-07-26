@@ -98,6 +98,45 @@ export default function QuemSomosPage() {
             ))}
           </div>
         </div>
+
+        {/* Nossa Liderança */}
+        <div className="border-t border-brand-900/40 pt-16 mt-20">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white text-center mb-4">
+            Nossa Liderança
+          </h2>
+          <p className="text-brand-100/60 text-sm sm:text-base text-center mb-12 max-w-xl mx-auto">
+            Conheça o time que está à frente da CPX Labs.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { name: "Carlos Pereira", role: "CEO & Co-fundador", bio: "15 anos de experiência em TI", initials: "CP", color: "bg-brand-700" },
+              { name: "Ana Lima", role: "CTO & Co-fundadora", bio: "Especialista em arquitetura de software", initials: "AL", color: "bg-brand-600" },
+              { name: "Rafael Souza", role: "Head de Engenharia", bio: "Expert em fullstack", initials: "RS", color: "bg-brand-500" },
+              { name: "Beatriz Santos", role: "Head de Projetos", bio: "PMP certificada", initials: "BS", color: "bg-brand-400" },
+            ].map((member) => (
+              <div
+                key={member.name}
+                className="rounded-3xl border border-brand-900 bg-brand-900/10 p-8 text-center hover:border-brand-700 transition-all duration-350"
+              >
+                <div
+                  className={`mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl text-xl font-bold text-white ${member.color}`}
+                >
+                  {member.initials}
+                </div>
+                <h3 className="mb-1 text-xl font-bold text-white">
+                  {member.name}
+                </h3>
+                <p className="text-brand-100/60 font-medium text-sm mb-2">
+                  {member.role}
+                </p>
+                <p className="text-brand-100/40 text-xs leading-relaxed">
+                  {member.bio}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -117,10 +117,9 @@ export default function Header() {
                       ? "text-brand-300 bg-brand-900/60"
                       : "text-brand-100/80 hover:text-brand-300 hover:bg-brand-900/60"
                   }`}
-                  style={{ animationDelay: `${i * 60}ms` }}
-                >
-                  {link.label}
-                </Link>
+                 >
+                   {link.label}
+                 </Link>
               );
             })}
             <div className="px-4 pt-2">

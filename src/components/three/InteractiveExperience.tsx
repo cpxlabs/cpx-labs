@@ -118,7 +118,17 @@ function FloatingShapes({ count = 10 }) {
   );
 }
 
-function Planet({ active, hovered, onClick, onPointerOver, onPointerOut, dragging, setDragging }: any) {
+interface PlanetProps {
+  active: boolean;
+  hovered: boolean;
+  onClick: (e: ThreeEvent<MouseEvent>) => void;
+  onPointerOver: (e: ThreeEvent<PointerEvent>) => void;
+  onPointerOut: () => void;
+  dragging: boolean;
+  setDragging: (v: boolean) => void;
+}
+
+function Planet({ active, hovered, onClick, onPointerOver, onPointerOut, dragging, setDragging }: PlanetProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   const materialRef = useRef<THREE.MeshPhysicalMaterial>(null);

@@ -99,13 +99,19 @@ npm run test:coverage
 
 | Arquivo | O que testa |
 |---|---|
-| `Hero.test.tsx` | Headline, badge, CTAs, estatísticas |
-| `Services.test.tsx` | 6 cards de serviços, destaques de tecnologias |
-| `About.test.tsx` | Missão/visão/valores, time, diferenciais |
-| `Contact.test.tsx` | Renderização do formulário, envio com sucesso, erros, payload |
+| `Hero.test.tsx` | Headline, CTAs, estatísticas |
+| `Services.test.tsx` | 6 cards de serviços, tags de tecnologia |
+| `About.test.tsx` | História, valores, painel de código |
+| `Contact.test.tsx` | Seção de contato com telefone e e-mail |
+| `ContactForm.test.tsx` | Formulário, envio, validação, payload |
 | `Footer.test.tsx` | Links de navegação, redes sociais, copyright |
+| `PortfolioPage.test.tsx` | Grid de projetos, links GitHub/Live Demo |
+| `FerramentasPage.test.tsx` | Card da ferramenta em destaque, CTAs |
+| `QuemSomosPage.test.tsx` | Missão, visão, valores fundamentais |
+| `ServicosPage.test.tsx` | Cards de serviço, banner de consultoria |
+| `ContatoPage.test.tsx` | Formulário, cards de informação de contato |
 | `api.contact.test.ts` | Validação, sanitização e respostas do endpoint `/api/contact` |
-| `api.whatsapp-webhook.test.ts` | Verificação do webhook, assinatura, filtros e fallback do `/api/whatsapp/webhook` |
+| `api.whatsapp-webhook.test.ts` | Verificação do webhook, assinatura, filtros e fallback |
 
 ## Estilo e branding
 
