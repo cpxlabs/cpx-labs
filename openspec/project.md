@@ -23,7 +23,11 @@ cpx-labs is a Next.js consulting site. Three initiatives drive feature work:
   tools, documents installation/usage, and (planned) consumes data from the
   extension.
 
-### Portfolio
+### Backend
+
+- **Backend API**: `openspec/specs/backend-api/spec.md` — formal specification for
+  API routes, build configuration (standalone output + Docker), Render deployment,
+  OpenAPI docs, and health checks.
 
 - **Portfolio page**: `/portfolio` — a responsive card grid of open-source
   projects, each with a screenshot, tech tags, description, GitHub link, and
@@ -51,5 +55,5 @@ cpx-labs is a Next.js consulting site. Three initiatives drive feature work:
   with screenshots, descriptions, and links to GitHub/live demos. (Completed — see
   `changes/add-portfolio-page/`.)
 - `deploy-backend` — deploy API backend on Render with Docker, standalone
-  output, OpenAPI spec, and deployment guide. (In progress — see
-  `changes/deploy-backend/`.)
+  output, OpenAPI spec, and deployment guide. (Completed — see
+  `changes/deploy-backend/` and `specs/backend-api/`.)
