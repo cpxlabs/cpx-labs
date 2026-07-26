@@ -50,7 +50,8 @@ cpx-labs is a Next.js consulting site. Three initiatives drive feature work:
 
 - `integrate-cv-smart-assistant` — integrate the CV Smart Assistant into cpx-labs:
   copy code under `tools/`, add the `/ferramentas` page, and plan the bridge +
-  front-end enhancements. (Proposed — see `changes/integrate-cv-smart-assistant/`.)
+  front-end enhancements. (Partially complete — tools hub built, bridge proposed — see
+  `changes/integrate-cv-smart-assistant/`.)
 - `add-portfolio-page` — add a `/portfolio` page showcasing open-source projects
   with screenshots, descriptions, and links to GitHub/live demos. (Completed — see
   `changes/add-portfolio-page/`.)

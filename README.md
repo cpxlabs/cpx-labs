@@ -8,8 +8,8 @@ A interface segue a paleta oficial do logo do **CPX Labs**, baseada em tons prof
 
 | Token | Hex | Uso principal |
 |---|---|---|
-| `brand-950` | `#16002f` | fundos escuros e rodapé |
-| `brand-900` | `#200047` | superfícies escuras secundárias |
+| `brand-950` | `#03000a` | fundos escuros e rodapé |
+| `brand-900` | `#080017` | superfícies escuras secundárias |
 | `brand-700` | `#42058f` | contraste e blocos institucionais |
 | `brand-500` | `#7f2cff` | CTAs e destaques principais |
 | `brand-300` | `#c29fff` | realces, hover e números |

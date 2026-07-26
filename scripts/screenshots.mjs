@@ -1,5 +1,7 @@
 import puppeteer from "puppeteer";
 
+// NOTE: Keep in sync with src/app/portfolio/page.tsx projects array.
+// Both files must be updated when adding or removing a project.
 const sites = [
   { name: "smokebuzz", url: "https://smokebuzz.vercel.app" },
   { name: "openband", url: "https://openband-one.vercel.app" },

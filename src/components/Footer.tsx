@@ -45,8 +45,6 @@ export default function Footer() {
               parceiro estratégico em tecnologia.
             </p>
             <p className="text-xs text-brand-200/48">
-              CNPJ: 00.000.000/0001-00
-              <br />
               Rio de Janeiro, RJ — Brasil
             </p>
           </div>

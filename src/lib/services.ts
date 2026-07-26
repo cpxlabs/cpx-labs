@@ -10,6 +10,7 @@ export interface FullService {
   title: string;
   description: string;
   highlights: string[];
+  fullWidth?: boolean;
 }
 
 export const homeServices: HomeService[] = [
@@ -86,5 +87,6 @@ export const fullServices: FullService[] = [
     description:
       "Transformamos dados em insights estratégicos com dashboards, analytics avançado e soluções de Big Data.",
     highlights: ["Dashboards", "ETL / Data Lakes", "Analytics"],
+    fullWidth: true,
   },
 ];

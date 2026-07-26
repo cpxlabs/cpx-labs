@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
+// NOTE: Keep in sync with scripts/screenshots.mjs sites array.
 const projects = [
   {
     name: "Smokebuzz",

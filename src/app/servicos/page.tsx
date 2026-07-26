@@ -15,8 +15,8 @@ export default function ServicosPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          {fullServices.map((service, index) => {
-            const isFullWidth = index === 4;
+          {fullServices.map((service) => {
+            const isFullWidth = service.fullWidth ?? false;
             return (
               <div
                 key={service.title}

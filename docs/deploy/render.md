@@ -43,7 +43,7 @@ No Render:
 2. Escolha o repositório.
 3. Runtime: **Docker**.
 4. Porta: **3001**.
-5. Health Check Path: `/api/contact`.
+5. Health Check Path: `/api/health`.
 
 ## Variáveis de ambiente
 

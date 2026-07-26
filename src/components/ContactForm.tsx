@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { ContactPayload } from "@/app/api/contact/route";
+import type { ContactPayload } from "@/lib/contact";
 
 export default function ContactForm() {
   const [form, setForm] = useState<ContactPayload>({
@@ -121,7 +121,7 @@ export default function ContactForm() {
         <input
           type="text"
           name="subject"
-          value={form.subject || ""}
+          value={form.subject}
           onChange={handleChange}
           placeholder="Como podemos ajudar?"
           className="w-full rounded-xl border border-brand-700 bg-brand-800/50 px-4 py-3 text-sm text-white placeholder-brand-100/40 transition-all duration-300 focus:border-brand-400 focus:ring-2 focus:ring-brand-400/20 focus:outline-none"

@@ -3,6 +3,7 @@ services:
     name: cpx-labs-api
     runtime: image
     repo: https://github.com/cpxlabs/cpx-labs
+    branch: main
     plan: starter
     region: oregon
     healthCheckPath: /api/health
