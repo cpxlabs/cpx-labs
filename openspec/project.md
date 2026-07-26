@@ -26,3 +26,6 @@ explores tighter integration between standalone tools and the web front-end.
 - `integrate-cv-smart-assistant` — integrate the CV Smart Assistant into cpx-labs:
   copy code under `tools/`, add the `/ferramentas` page, and plan the bridge +
   front-end enhancements. (Proposed — see `changes/integrate-cv-smart-assistant/`.)
+- `add-portfolio-page` — add a `/portfolio` page showcasing open-source projects
+  with screenshots, descriptions, and links to GitHub/live demos. (Completed — see
+  `changes/add-portfolio-page/`.)
