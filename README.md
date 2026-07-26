@@ -33,17 +33,19 @@ Os tokens ficam centralizados em `/src/app/globals.css` e são reutilizados por 
 
 ## Páginas e seções
 
-| Seção | Descrição |
-|---|---|
-| **Início** | Hero com headline, estatísticas e CTAs |
-| **Serviços** | 6 cards de serviços de TI (desenvolvimento, cloud, segurança, BI, IA e consultoria) |
-| **Quem Somos** | Missão, visão, valores, diferenciais e equipe de liderança |
-| **Contato** | Formulário funcional via `/api/contact` + canais de contato |
-| **Webhook WhatsApp** | Endpoint `/api/whatsapp/webhook` para validar o webhook da Meta, resumir textões com IA e encaminhar alertas |
+| Seção | Rota | Descrição |
+|---|---|---|
+| **Início** | `/` | Hero com headline, estatísticas e CTAs |
+| **Serviços** | `/servicos` | 6 cards de serviços de TI (desenvolvimento, cloud, segurança, BI, IA e consultoria) |
+| **Ferramentas** | `/ferramentas` | Hub de ferramentas internas com links para GitHub |
+| **Portfólio** | `/portfolio` | Projetos open-source com screenshots, descrições e links para GitHub + live demo |
+| **Quem Somos** | `/quem-somos` | Missão, visão, valores, diferenciais e equipe de liderança |
+| **Contato** | `/contato` | Formulário funcional via `/api/contact` + canais de contato |
+| **Webhook WhatsApp** | `/api/whatsapp/webhook` | Endpoint para validar o webhook da Meta, resumir textões com IA e encaminhar alertas |
 
 ## Pré-requisitos
 
-- **Node.js** ≥ 18
+- **Node.js** ≥ 22 (testado com v22.23.1)
 - **npm** ≥ 9
 
 ## Desenvolvimento local
@@ -76,6 +78,7 @@ npm run dev
 | `npm test` | Executa todos os testes |
 | `npm run test:watch` | Executa os testes em modo watch |
 | `npm run test:coverage` | Executa os testes com relatório de cobertura |
+| `node scripts/screenshots.mjs` | Regenera as screenshots de todos os projetos do portfólio |
 
 ## Testes
 
@@ -214,22 +217,38 @@ cpx-labs/
 │   │   │   └── whatsapp/
 │   │   │       └── webhook/
 │   │   │           └── route.ts  # Webhook da WhatsApp Cloud API
+│   │   ├── ferramentas/
+│   │   │   └── page.tsx          # Hub de ferramentas internas
+│   │   ├── portfolio/
+│   │   │   └── page.tsx          # Projetos open-source com screenshots
 │   │   ├── globals.css
 │   │   ├── layout.tsx            # Layout raiz (metadados SEO, lang="pt-BR")
-│   │   └── page.tsx              # Página principal (single-page)
+│   │   └── page.tsx              # Página principal (hero + serviços + contato)
 │   ├── components/
-│       ├── Header.tsx            # Navegação fixa e responsiva
-│       ├── Hero.tsx              # Seção de destaque
-│       ├── Services.tsx          # Grade de serviços
-│       ├── About.tsx             # Quem somos + equipe
-│       ├── Contact.tsx           # Formulário de contato
-│       └── Footer.tsx            # Rodapé
-│   └── lib/
-│       ├── ai-summary.ts         # Resumo/fallback via Gemini REST
-│       └── whatsapp.ts           # Configuração, parsing e envio via WhatsApp Cloud API
+│   │   ├── Header.tsx            # Navegação fixa e responsiva
+│   │   ├── Hero.tsx              # Seção de destaque
+│   │   ├── Services.tsx          # Grade de serviços
+│   │   ├── About.tsx             # Quem somos + equipe
+│   │   ├── Contact.tsx           # Formulário de contato
+│   │   ├── Footer.tsx            # Rodapé
+│   │   ├── PageTransition.tsx    # Transições de página
+│   │   ├── ThreeScene.tsx        # Cena Three.js 3D de fundo
+│   │   └── three/                # Componentes Three.js
+│   ├── lib/
+│   │   ├── ai-summary.ts         # Resumo/fallback via Gemini REST
+│   │   ├── tools.ts              # Dados tipados das ferramentas
+│   │   └── whatsapp.ts           # Configuração, parsing e envio via WhatsApp Cloud API
 ├── public/
+│   ├── portfolio/                # Screenshots dos projetos do portfólio
 │   └── screenshots/              # Capturas de tela das seções
+├── openspec/                     # Especificações do projeto
+│   ├── project.md                # Visão geral das iniciativas
+│   ├── specs/                    # Especificações formais por capacidade
+│   └── changes/                  # Propostas de mudança por feature
+├── scripts/
+│   └── screenshots.mjs           # Script Puppeteer para capturar demos
 ├── .env.example                  # Template de variáveis de ambiente
+├── .nvmrc                        # Versão do Node.js (22.23.1)
 ├── jest.config.ts                # Configuração do Jest
 ├── jest.setup.ts                 # Setup global dos testes (jest-dom)
 ├── vercel.json                   # Configuração do deploy na Vercel

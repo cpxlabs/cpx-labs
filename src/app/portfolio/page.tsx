@@ -119,6 +119,7 @@ function ProjectCard({
           <img
             src={`/portfolio/${project.slug}.png`}
             alt={project.name}
+            loading="lazy"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             onError={() => setImgError(true)}
           />

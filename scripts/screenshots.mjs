@@ -31,7 +31,9 @@ for (const site of sites) {
     try {
       await page.screenshot({ path: `public/portfolio/${site.name}.png`, fullPage: false });
       console.log(`  Partial screenshot saved for ${site.name}`);
-    } catch (_) {}
+    } catch (e2) {
+      console.error(`  Failed to capture partial screenshot for ${site.name}: ${e2.message}`);
+    }
   }
   await page.close();
 }
