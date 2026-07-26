@@ -1,42 +1,5 @@
 import Link from "next/link";
-
-const services = [
-  {
-    icon: "🤖",
-    title: "Inteligência Artificial",
-    description:
-      "Implementamos soluções de IA e automação para aumentar a produtividade e competitividade do seu negócio.",
-    highlights: ["Machine Learning", "Computer Vision", "Chatbots & NLP"],
-  },
-  {
-    icon: "☁️",
-    title: "Cloud Computing",
-    description:
-      "Migração, arquitetura e gerenciamento de ambientes em nuvem com foco em escalabilidade, segurança e redução de custos.",
-    highlights: ["AWS / Azure / GCP", "Docker & Kubernetes", "CI/CD Pipelines"],
-  },
-  {
-    icon: "🔒",
-    title: "Cyber Security",
-    description:
-      "Protegemos os ativos digitais da sua empresa com análises de vulnerabilidade, conformidade e políticas de segurança robustas.",
-    highlights: ["Pentest & Auditoria", "Zero Trust", "LGPD / Compliance"],
-  },
-  {
-    icon: "💻",
-    title: "Software Development",
-    description:
-      "Criamos aplicações web, mobile e desktop sob medida, utilizando as tecnologias mais modernas e adequadas ao seu negócio.",
-    highlights: ["React / Next.js", "Node.js APIs", "Apps Mobile"],
-  },
-  {
-    icon: "📊",
-    title: "Business Intelligence",
-    description:
-      "Transformamos dados em insights estratégicos com dashboards, analytics avançado e soluções de Big Data.",
-    highlights: ["Dashboards", "ETL / Data Lakes", "Analytics"],
-  },
-];
+import { fullServices } from "@/lib/services";
 
 export default function ServicosPage() {
   return (
@@ -51,9 +14,8 @@ export default function ServicosPage() {
           </p>
         </div>
 
-        {/* 5-card grid: 2 cols on md/lg, and the 5th can span or remain neat */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          {services.map((service, index) => {
+          {fullServices.map((service, index) => {
             const isFullWidth = index === 4;
             return (
               <div
@@ -91,7 +53,6 @@ export default function ServicosPage() {
           })}
         </div>
 
-        {/* Consultoria Estratégica banner */}
         <div className="rounded-3xl border border-brand-900 bg-gradient-to-r from-brand-900/30 to-brand-800/20 p-8 md:p-12 hover:border-brand-700 transition-all duration-350">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="flex-1">

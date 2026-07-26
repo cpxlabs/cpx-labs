@@ -1,174 +1,78 @@
 const values = [
   {
-    icon: "🎯",
-    title: "Missão",
-    description:
-      "Entregar soluções tecnológicas de alto impacto que resolvam problemas reais e gerem valor duradouro para nossos clientes.",
+    title: "Inovação",
+    desc: "Soluções modernas e disruptivas.",
   },
   {
-    icon: "🔭",
-    title: "Visão",
-    description:
-      "Ser reconhecido como o parceiro tecnológico de referência para empresas que buscam inovar com excelência e segurança.",
+    title: "Integridade",
+    desc: "Parceria de longo prazo baseada em confiança.",
   },
   {
-    icon: "💎",
-    title: "Valores",
-    description:
-      "Transparência, excelência técnica, comprometimento com resultados e relações de longo prazo baseadas em confiança.",
-  },
-];
-
-const team = [
-  {
-    name: "Carlos Pereira",
-    role: "CEO & Co-fundador",
-    bio: "15 anos de experiência em TI e gestão de produtos digitais em empresas de grande porte.",
-    initials: "CP",
-    color: "bg-brand-700",
-  },
-  {
-    name: "Ana Lima",
-    role: "CTO & Co-fundadora",
-    bio: "Especialista em arquitetura de software, cloud e segurança da informação.",
-    initials: "AL",
-    color: "bg-brand-600",
-  },
-  {
-    name: "Rafael Souza",
-    role: "Head de Engenharia",
-    bio: "Expert em desenvolvimento fullstack e liderança de times de alta performance.",
-    initials: "RS",
-    color: "bg-brand-500",
-  },
-  {
-    name: "Beatriz Santos",
-    role: "Head de Projetos",
-    bio: "PMP certificada com vasta experiência em gestão ágil de projetos de TI complexos.",
-    initials: "BS",
-    color: "bg-brand-400",
+    title: "Qualidade",
+    desc: "Código limpo e arquitetura escalável.",
   },
 ];
 
 export default function About() {
   return (
-    <section id="quem-somos" className="py-24 bg-white">
+    <section className="py-24 border-t border-brand-900/40 bg-brand-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <span className="mb-4 inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-800">
-            Nossa história
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-950 mb-4">
-            Quem Somos
-          </h2>
-          <p className="text-brand-800/72 text-lg max-w-3xl mx-auto">
-            O CPX Labs é uma consultoria de TI especializada em transformação
-            digital. Nascemos da visão de que tecnologia deve ser um{" "}
-            <strong className="text-brand-900">diferencial estratégico</strong>{" "}
-            — não apenas infraestrutura. Trabalhamos lado a lado com nossos
-            clientes para criar soluções que realmente fazem a diferença.
-          </p>
-        </div>
-
-        <div className="animate-stagger grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          {values.map((item) => (
-            <div
-              key={item.title}
-              className="rounded-3xl border border-brand-100 bg-brand-50 p-8 text-center shadow-sm transition-all duration-400 ease-out-expo hover:-translate-y-1 hover:border-brand-200 hover:shadow-lg hover:shadow-brand-500/8"
-            >
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-3xl shadow-sm transition-transform duration-300 ease-spring group-hover:scale-110">
-                {item.icon}
-              </div>
-              <h3 className="mb-3 text-xl font-bold text-brand-950">
-                {item.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-brand-800/72">
-                {item.description}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-brand-950 mb-6">
-              Por que escolher o CPX Labs?
-            </h3>
-            <div className="space-y-4">
-              {[
-                {
-                  title: "Time sênior e especializado",
-                  desc: "Nossa equipe é formada por profissionais com experiência comprovada em projetos de grande escala.",
-                },
-                {
-                  title: "Metodologia ágil e transparente",
-                  desc: "Adotamos frameworks ágeis com comunicação contínua para entregar valor desde o primeiro sprint.",
-                },
-                {
-                  title: "Soluções sob medida",
-                  desc: "Não acreditamos em soluções genéricas. Cada projeto é tratado com a atenção que ele merece.",
-                },
-                {
-                  title: "Suporte e parceria de longo prazo",
-                  desc: "Estamos presentes após a entrega para garantir a evolução contínua da sua plataforma.",
-                },
-              ].map((item) => (
+            <span className="text-brand-400 text-sm font-semibold tracking-widest uppercase block mb-3">
+              História e Valores
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-6">
+              Quem Somos
+            </h2>
+            <p className="text-brand-100/70 text-lg leading-relaxed mb-8">
+              Nossa missão é impulsionar negócios através de soluções tecnológicas avançadas, garantindo inovação, segurança e eficiência operacional.
+            </p>
+            <div className="space-y-5">
+              {values.map((item) => (
                 <div key={item.title} className="flex gap-4">
-                  <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand-500">
-                    <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-300 text-xs font-bold">
+                    ✓
                   </div>
                   <div>
-                    <p className="font-semibold text-brand-950">{item.title}</p>
-                    <p className="mt-0.5 text-sm text-brand-800/72">{item.desc}</p>
+                    <h4 className="font-semibold text-white text-base">{item.title}</h4>
+                    <p className="text-brand-200/60 text-sm">{item.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="animate-stagger grid grid-cols-2 gap-4">
-            {[
-              { number: "2014", label: "Fundação" },
-              { number: "50+", label: "Projetos" },
-              { number: "30+", label: "Clientes" },
-              { number: "5", label: "Países atendidos" },
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                className="rounded-3xl bg-brand-950 p-6 text-center transition-transform duration-300 ease-spring hover:scale-[1.03] hover:shadow-xl hover:shadow-brand-950/30"
-              >
-                <p className="text-3xl font-extrabold text-brand-300">
-                  {stat.number}
-                </p>
-                <p className="mt-1 text-sm text-brand-100/68">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        <div>
-          <h3 className="text-2xl sm:text-3xl font-extrabold text-brand-950 text-center mb-10">
-            Nossa Liderança
-          </h3>
-          <div className="animate-stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member) => (
-              <div
-                key={member.name}
-                className="rounded-3xl border border-brand-100 p-6 text-center transition-all duration-400 ease-out-expo hover:-translate-y-1 hover:border-brand-200 hover:shadow-lg hover:shadow-brand-500/10"
-              >
-                <div
-                  className={`w-16 h-16 ${member.color} rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 transition-transform duration-300 ease-spring group-hover:scale-110`}
-                >
-                  {member.initials}
-                </div>
-                <h4 className="font-bold text-brand-950">{member.name}</h4>
-                <p className="mb-2 text-sm font-medium text-brand-600">
-                  {member.role}
-                </p>
-                <p className="text-sm text-brand-800/72">{member.bio}</p>
+          <div className="relative h-[400px] w-full rounded-3xl overflow-hidden border border-brand-800 bg-brand-900/20 backdrop-blur-sm p-6 flex flex-col justify-between group hover:border-brand-700 transition-all duration-350">
+            <div className="absolute top-0 right-0 h-48 w-48 rounded-full bg-brand-500/10 blur-3xl pointer-events-none" />
+            <div className="flex items-center justify-between border-b border-brand-800 pb-4">
+              <div className="flex gap-2">
+                <div className="h-3 w-3 rounded-full bg-red-500/60" />
+                <div className="h-3 w-3 rounded-full bg-yellow-500/60" />
+                <div className="h-3 w-3 rounded-full bg-green-500/60" />
               </div>
-            ))}
+              <span className="text-xs text-brand-400 font-mono">cpx-labs-dashboard.json</span>
+            </div>
+            <div className="flex-1 flex flex-col justify-center py-6 font-mono text-xs text-brand-300 space-y-4">
+              <div className="bg-brand-950/60 border border-brand-800/40 p-4 rounded-xl">
+                <span className="text-brand-400">const</span> cpxLabs = &#123;
+                <div className="pl-4">
+                  mission: <span className="text-green-400">&quot;Transformação Digital&quot;</span>,
+                  focus: [<span className="text-green-400">&quot;IA&quot;</span>, <span className="text-green-400">&quot;Cloud&quot;</span>, <span className="text-green-400">&quot;Security&quot;</span>],
+                  quality: <span className="text-brand-400">true</span>
+                </div>
+                &#125;;
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <div className="h-2 rounded bg-brand-700/40 w-full" />
+                <div className="h-2 rounded bg-brand-600/40 w-1/2" />
+                <div className="h-2 rounded bg-brand-800/40 w-3/4" />
+              </div>
+            </div>
+            <div className="border-t border-brand-800 pt-4 flex justify-between items-center text-xs text-brand-400">
+              <span>Architecture Verified</span>
+              <span className="text-green-400">● Online</span>
+            </div>
           </div>
         </div>
       </div>

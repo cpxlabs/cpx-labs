@@ -5,43 +5,47 @@ describe("Hero", () => {
   it("renders the main headline", () => {
     render(<Hero />);
     expect(
-      screen.getByText(/Transformando negócios/i)
+      screen.getByText(/Engenharia de Precisão para/i)
     ).toBeInTheDocument();
   });
 
   it("renders the sub-headline description", () => {
     render(<Hero />);
     expect(
-      screen.getByText(/parceiro estratégico em inovação tecnológica/i)
+      screen.getByText(/Custom software development/i)
     ).toBeInTheDocument();
   });
 
-  it("renders the 'Nossos Serviços' CTA link", () => {
+  it("renders the 'Começar' CTA link", () => {
     render(<Hero />);
-    const link = screen.getByRole("link", { name: /Nossos Serviços/i });
+    const link = screen.getByRole("link", { name: /Começar/i });
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute("href", "#servicos");
+    expect(link).toHaveAttribute("href", "/servicos");
   });
 
-  it("renders the 'Fale Conosco' CTA link", () => {
+  it("renders the 'Falar com Consultor' CTA link", () => {
     render(<Hero />);
-    const links = screen.getAllByRole("link", { name: /Fale Conosco/i });
+    const links = screen.getAllByRole("link", { name: /Falar com Consultor/i });
     expect(links.length).toBeGreaterThanOrEqual(1);
-    expect(links[0]).toHaveAttribute("href", "#contato");
+    expect(links[0]).toHaveAttribute("href", "/contato");
   });
 
-  it("renders all four statistics", () => {
+  it("renders all three statistics", () => {
     render(<Hero />);
     expect(screen.getByText("50+")).toBeInTheDocument();
-    expect(screen.getByText("30+")).toBeInTheDocument();
+    expect(screen.getByText("98%")).toBeInTheDocument();
     expect(screen.getByText("10+")).toBeInTheDocument();
-    expect(screen.getByText("99%")).toBeInTheDocument();
   });
 
-  it("renders the badge text", () => {
+  it("renders stat labels", () => {
     render(<Hero />);
-    expect(
-      screen.getByText(/Consultoria em TI de Alta Performance/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Projetos Entregues/i)).toBeInTheDocument();
+    expect(screen.getByText(/Taxa de Sucesso/i)).toBeInTheDocument();
+    expect(screen.getByText(/Anos de Experiência/i)).toBeInTheDocument();
+  });
+
+  it("renders the gradient 'Transformação Digital' span", () => {
+    render(<Hero />);
+    expect(screen.getByText("Transformação Digital")).toBeInTheDocument();
   });
 });
