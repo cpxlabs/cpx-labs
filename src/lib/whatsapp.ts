@@ -1,7 +1,7 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 const DEFAULT_MINIMUM_SUMMARY_CHARACTERS = 150;
-const DEFAULT_GRAPH_API_VERSION = "v20.0";
+const DEFAULT_GRAPH_API_VERSION = "v21.0";
 const PROCESSED_MESSAGE_TTL_MS = 10 * 60 * 1000;
 
 const processedMessageIds = new Map<string, number>();

@@ -5,6 +5,14 @@ import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import { Float, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
+function createPRNG(seed: number) {
+  let s = seed | 0;
+  return () => {
+    s = (s * 1664525 + 1013904223) | 0;
+    return (s >>> 0) / 4294967296;
+  };
+}
+
 const BRAND_COLORS = {
   purple: new THREE.Color("#a164ff"),
   light: new THREE.Color("#c29fff"),
@@ -15,13 +23,14 @@ function FloatingParticles({ count = 250 }) {
   const pointsRef = useRef<THREE.Points>(null);
 
   // Store original positions for reference in wave calculations
-  const [originalPositions, particlesPosition] = useMemo(() => {
+  const [originalPositions, bufferPositions] = useMemo(() => {
+    const rand = createPRNG(42);
     const orig = new Float32Array(count * 3);
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const x = (Math.random() - 0.5) * 12;
-      const y = (Math.random() - 0.5) * 12;
-      const z = (Math.random() - 0.5) * 12;
+      const x = (rand() - 0.5) * 12;
+      const y = (rand() - 0.5) * 12;
+      const z = (rand() - 0.5) * 12;
       orig[i * 3] = x;
       orig[i * 3 + 1] = y;
       orig[i * 3 + 2] = z;
@@ -54,7 +63,7 @@ function FloatingParticles({ count = 250 }) {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          args={[particlesPosition, 3]}
+          args={[bufferPositions, 3]}
         />
       </bufferGeometry>
       <pointsMaterial
@@ -70,20 +79,21 @@ function FloatingParticles({ count = 250 }) {
 
 function FloatingShapes({ count = 10 }) {
   const shapes = useMemo(() => {
+    const rand = createPRNG(99);
     return Array.from({ length: count }).map(() => ({
       position: [
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10,
+        (rand() - 0.5) * 10,
+        (rand() - 0.5) * 10,
+        (rand() - 0.5) * 10,
       ] as [number, number, number],
       rotation: [
-        Math.random() * Math.PI,
-        Math.random() * Math.PI,
-        Math.random() * Math.PI,
+        rand() * Math.PI,
+        rand() * Math.PI,
+        rand() * Math.PI,
       ] as [number, number, number],
-      scale: 0.1 + Math.random() * 0.2,
-      speed: 0.5 + Math.random() * 1.5,
-      type: Math.floor(Math.random() * 3),
+      scale: 0.1 + rand() * 0.2,
+      speed: 0.5 + rand() * 1.5,
+      type: Math.floor(rand() * 3),
     }));
   }, [count]);
 

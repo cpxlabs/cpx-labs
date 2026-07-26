@@ -36,7 +36,7 @@ Os tokens ficam centralizados em `/src/app/globals.css` e são reutilizados por 
 | Seção | Rota | Descrição |
 |---|---|---|
 | **Início** | `/` | Hero com headline, estatísticas e CTAs |
-| **Serviços** | `/servicos` | 6 cards de serviços de TI (desenvolvimento, cloud, segurança, BI, IA e consultoria) |
+| **Serviços** | `/servicos` | 5 cards de serviços de TI + banner de consultoria estratégica |
 | **Ferramentas** | `/ferramentas` | Hub de ferramentas internas com links para GitHub |
 | **Portfólio** | `/portfolio` | Projetos open-source com screenshots, descrições e links para GitHub + live demo |
 | **Quem Somos** | `/quem-somos` | Missão, visão, valores, diferenciais e equipe de liderança |
@@ -256,7 +256,7 @@ cpx-labs/
 ├── .env.example                  # Template de variáveis de ambiente
 ├── .nvmrc                        # Versão do Node.js (22.23.1)
 ├── jest.config.ts                # Configuração do Jest
-├── jest.setup.ts                 # Setup global dos testes (jest-dom)
+├── jest.setup.tsx                # Setup global dos testes (jest-dom)
 ├── vercel.json                   # Configuração do deploy na Vercel
 └── next.config.ts                # Configuração do Next.js
 ```

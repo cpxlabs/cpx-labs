@@ -5,7 +5,7 @@ services:
     repo: https://github.com/cpxlabs/cpx-labs
     plan: starter
     region: oregon
-    healthCheckPath: /api/contact
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production

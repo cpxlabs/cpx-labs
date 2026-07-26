@@ -44,3 +44,13 @@ only inside the full Next.js app on Vercel. A separate Render deployment provide
 - **When** a signed POST arrives at `/api/whatsapp/webhook`
 - **Then** text messages above the threshold are summarized and forwarded to
   the admin number
+
+### Scenario 4: ESLint passes with no errors
+- **Given** the project has all dependencies installed
+- **When** `npx eslint src/` is run
+- **Then** it exits with code 0 and produces no errors
+
+### Scenario 5: TypeScript compiles without errors
+- **Given** the project has all dependencies installed
+- **When** `npx tsc --noEmit` is run
+- **Then** it exits with code 0 and produces no type errors

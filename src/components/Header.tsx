@@ -105,7 +105,7 @@ export default function Header() {
           }`}
         >
           <div className="border-t border-brand-800 pt-4 space-y-1">
-            {navLinks.map((link, i) => {
+            {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
