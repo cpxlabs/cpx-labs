@@ -34,8 +34,10 @@
     "@types/three": "^0.185.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "hermes-parser": "^0.37.0",
     "jest": "^30.4.0",
     "jest-environment-jsdom": "^30.4.0",
+    "language-subtag-registry": "^0.4.2",
     "puppeteer": "^25.3.0",
     "tailwindcss": "^4",
     "typescript": "^5"
