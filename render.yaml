@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: cpx-labs-api
+    runtime: image
+    repo: https://github.com/cpxlabs/cpx-labs
+    plan: starter
+    region: oregon
+    healthCheckPath: /api/contact
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOSTNAME
+        value: 0.0.0.0
+      - key: PORT
+        value: 3001
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
+      - key: CONTACT_TO_EMAIL
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: WHATSAPP_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_VERIFY_TOKEN
+        sync: false
+      - key: WHATSAPP_APP_SECRET
+        sync: false
+      - key: WHATSAPP_ADMIN_NUMBER
+        sync: false
+      - key: WHATSAPP_BUSINESS_PHONE_NUMBER
+        sync: false
+      - key: WHATSAPP_MIN_SUMMARY_CHARACTERS
+        value: "200"
+      - key: WHATSAPP_GRAPH_API_VERSION
+        value: v21.0
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: WHATSAPP_AI_MODEL
+        value: gemini-2.5-flash
+      - key: WHATSAPP_AI_TIMEOUT_MS
+        value: "10000"

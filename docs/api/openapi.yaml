@@ -1,0 +1,289 @@
+openapi: 3.1.0
+info:
+  title: CPX Labs API
+  description: |
+    API backend for CPX Labs — contact form submissions and WhatsApp Cloud
+    API webhook integration.
+  version: 1.0.0
+  contact:
+    name: CPX Labs
+    email: contato.cpxlabs@gmail.com
+    url: https://cpxlabs.com.br
+
+servers:
+  - url: https://cpxlabs.onrender.com
+    description: Render (production)
+  - url: http://localhost:3001
+    description: Local development
+
+paths:
+  /api/contact:
+    post:
+      summary: Submit contact form
+      description: |
+        Receives a contact form submission, validates the payload, and either
+        forwards it via SMTP (when configured) or logs it to stdout (fallback).
+      operationId: submitContactForm
+      tags:
+        - Contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactPayload'
+      responses:
+        '200':
+          description: Message received successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    enum: [true]
+                  message:
+                    type: string
+                    example: Mensagem recebida com sucesso!
+        '400':
+          description: Invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation error (missing or invalid fields)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: Health check / method not allowed
+      description: GET returns 405. Used as a lightweight health-check endpoint.
+      operationId: contactHealthCheck
+      tags:
+        - Contact
+      responses:
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/whatsapp/webhook:
+    get:
+      summary: Verify WhatsApp webhook
+      description: |
+        Handles the Meta webhook verification handshake. Responds to
+        `hub.mode=subscribe&hub.verify_token=<token>&hub.challenge=<challenge>`.
+      operationId: verifyWhatsAppWebhook
+      tags:
+        - WhatsApp
+      parameters:
+        - name: hub.mode
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [subscribe]
+        - name: hub.verify_token
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: hub.challenge
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Verification successful
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: Echoes the hub.challenge value
+        '403':
+          description: Invalid verify token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Webhook not configured (missing env vars)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Incoming WhatsApp message
+      description: |
+        Receives incoming WhatsApp messages via Meta's Cloud API webhook.
+        Verifies the X-Hub-Signature-256, extracts text messages, summarizes
+        long messages with Gemini AI, and forwards the summary to the admin
+        WhatsApp number.
+      operationId: processWhatsAppWebhook
+      tags:
+        - WhatsApp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhatsAppWebhookPayload'
+      parameters:
+        - name: X-Hub-Signature-256
+          in: header
+          required: true
+          schema:
+            type: string
+            description: HMAC-SHA256 signature of the raw request body
+      responses:
+        '200':
+          description: Webhook processed (or ignored for non-text / business self-messages)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    enum: [true]
+                  processed:
+                    type: integer
+                    description: Number of messages that triggered an admin alert
+                  ignored:
+                    type: boolean
+                    description: Present when the payload is not from a WhatsApp Business Account
+        '400':
+          description: Invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid signature
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Missing or invalid WhatsApp configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ContactPayload:
+      type: object
+      required:
+        - name
+        - email
+        - message
+      properties:
+        name:
+          type: string
+          maxLength: 2000
+          description: Sender's full name
+          example: João Silva
+        email:
+          type: string
+          format: email
+          maxLength: 2000
+          description: Sender's e-mail address
+          example: joao@example.com
+        subject:
+          type: string
+          maxLength: 2000
+          description: Message subject
+          example: Consultoria em Cloud
+        company:
+          type: string
+          maxLength: 2000
+          description: Sender's company name
+          example: Tech Solutions Ltda
+        service:
+          type: string
+          maxLength: 2000
+          description: Service of interest
+          example: Cloud & Infraestrutura
+        message:
+          type: string
+          maxLength: 2000
+          description: Message body
+          example: Gostaria de saber mais sobre seus serviços de cloud.
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Human-readable error message in PT-BR
+          example: Campos obrigatórios: nome, e-mail e mensagem.
+
+    WhatsAppWebhookPayload:
+      type: object
+      properties:
+        object:
+          type: string
+          example: whatsapp_business_account
+        entry:
+          type: array
+          items:
+            type: object
+            properties:
+              changes:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: object
+                      properties:
+                        messaging_product:
+                          type: string
+                        metadata:
+                          type: object
+                          properties:
+                            display_phone_number:
+                              type: string
+                            phone_number_id:
+                              type: string
+                        contacts:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              profile:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                              wa_id:
+                                type: string
+                        messages:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              from:
+                                type: string
+                              id:
+                                type: string
+                              timestamp:
+                                type: string
+                              type:
+                                type: string
+                                enum: [text]
+                              text:
+                                type: object
+                                properties:
+                                  body:
+                                    type: string

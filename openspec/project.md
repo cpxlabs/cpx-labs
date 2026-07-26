@@ -1,6 +1,6 @@
 # Project: cpx-labs
 
-cpx-labs is a Next.js consulting site. Two initiatives drive feature work:
+cpx-labs is a Next.js consulting site. Three initiatives drive feature work:
 
 1. **Tools** — a curated **Ferramentas (Tools) hub** that showcases developer
    tooling and explores tighter integration between standalone tools and the web
@@ -8,6 +8,8 @@ cpx-labs is a Next.js consulting site. Two initiatives drive feature work:
 2. **Portfolio** — a public-facing **Portfolio page** that displays open-source
    projects built by the team, with screenshots, descriptions, and links to
    GitHub repositories and live demos.
+3. **Backend** — standalone deployment of API routes on Render with Docker,
+   OpenAPI documentation, and a Render Blueprint config.
 
 ## Key references
 
@@ -37,6 +39,8 @@ cpx-labs is a Next.js consulting site. Two initiatives drive feature work:
    views, install guides, and a typed tool data module).
 3. **portfolio** — UI and data for the `/portfolio` page (project cards,
    screenshots, navigation link).
+4. **deploy-backend** — standalone output + Docker + Render Blueprint for
+   API backend deployment.
 
 ## Active changes
 
@@ -46,3 +50,6 @@ cpx-labs is a Next.js consulting site. Two initiatives drive feature work:
 - `add-portfolio-page` — add a `/portfolio` page showcasing open-source projects
   with screenshots, descriptions, and links to GitHub/live demos. (Completed — see
   `changes/add-portfolio-page/`.)
+- `deploy-backend` — deploy API backend on Render with Docker, standalone
+  output, OpenAPI spec, and deployment guide. (In progress — see
+  `changes/deploy-backend/`.)

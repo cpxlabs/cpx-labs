@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Produce a standalone output bundle — ideal for Docker / custom Vercel builds.
-  // Vercel's native Next.js integration handles this automatically, so this
-  // option is commented out here; un-comment if deploying via Docker.
-  // output: "standalone",
+  // Standalone bundle for Docker/Render deployments.
+  output: "standalone",
 
   // Strict React mode for catching potential issues early.
   reactStrictMode: true,

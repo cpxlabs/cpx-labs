@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function Contact() {
   return (
     <section className="py-20 border-t border-brand-900/40 bg-brand-950/50">

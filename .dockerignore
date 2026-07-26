@@ -1,0 +1,20 @@
+.next
+.git
+.gitignore
+node_modules
+Dockerfile
+README.md
+coverage
+.eslintrc
+.prettierrc
+*.md
+.vscode
+tools
+scripts
+openspec
+docs
+
+# env files
+.env
+.env.local
+.env*.local
