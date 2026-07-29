@@ -405,7 +405,7 @@ export default function ContratoPage() {
                 <label className="flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" {...termsForm.register("aceiteTermos")} className="mt-0.5 accent-brand-500" />
                   <span className="text-sm text-brand-200/80">
-                    Li e concordo com os <Link href="/cluster-produtora" className="text-brand-400 underline">termos de serviço</Link> da Cluster Produtora *
+                    Li e concordo com os <Link href="/servicos/producao-musical" className="text-brand-400 underline">termos de serviço</Link> da Cluster Produtora *
                   </span>
                 </label>
                 {termsForm.formState.errors.aceiteTermos && <p className="text-red-400 text-xs ml-7">{termsForm.formState.errors.aceiteTermos.message}</p>}

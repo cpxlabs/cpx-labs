@@ -24,7 +24,7 @@ function AssinadoContent() {
 
   useEffect(() => {
     if (!token) {
-      router.replace("/cluster-produtora/contrato");
+      router.replace("/servicos/producao-musical/contrato");
       return;
     }
 
@@ -85,7 +85,7 @@ function AssinadoContent() {
             <p className="text-red-300 text-lg font-bold mb-2">Erro ao gerar contrato</p>
             <p className="text-red-200/70 text-sm mb-6">{error}</p>
             <Link
-              href="/cluster-produtora/contrato"
+              href="/servicos/producao-musical/contrato"
               className="inline-block bg-brand-500 hover:bg-brand-400 text-white px-6 py-3 rounded-full text-sm font-semibold transition-all"
             >
               Tentar novamente
@@ -149,7 +149,7 @@ function AssinadoContent() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href="/cluster-produtora"
+            href="/servicos/producao-musical"
             className="bg-brand-500 hover:bg-brand-400 text-white px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 ease-spring brand-glow active:scale-[0.97]"
           >
             Voltar ao site

@@ -8,11 +8,8 @@ const footerLinks = {
     { label: "Contato", href: "/contato" },
   ],
   Serviços: [
-    { label: "Desenvolvimento de Software", href: "/servicos" },
-    { label: "Cloud & Infraestrutura", href: "/servicos" },
-    { label: "Segurança da Informação", href: "/servicos" },
-    { label: "Business Intelligence", href: "/servicos" },
-    { label: "Inteligência Artificial", href: "/servicos" },
+    { label: "Soluções em TI", href: "/servicos" },
+    { label: "Produção Musical", href: "/servicos/producao-musical" },
   ],
   Legal: [
     { label: "Política de Privacidade", href: "#" },

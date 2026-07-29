@@ -9,13 +9,13 @@ export async function GET(request: NextRequest) {
 
   if (error) {
     return NextResponse.redirect(
-      new URL("/cluster-produtora/contrato?erro=govbr-negado", request.url)
+      new URL("/servicos/producao-musical/contrato?erro=govbr-negado", request.url)
     );
   }
 
   if (!code) {
     return NextResponse.redirect(
-      new URL("/cluster-produtora/contrato?erro=govbr-sem-codigo", request.url)
+      new URL("/servicos/producao-musical/contrato?erro=govbr-sem-codigo", request.url)
     );
   }
 
@@ -23,12 +23,12 @@ export async function GET(request: NextRequest) {
     const userInfo = await exchangeGovbrCode(code);
     const token = await createSignToken(userInfo);
 
-    const redirectUrl = new URL("/cluster-produtora/contrato/assinado", request.url);
+    const redirectUrl = new URL("/servicos/producao-musical/contrato/assinado", request.url);
     redirectUrl.searchParams.set("token", token);
     return NextResponse.redirect(redirectUrl);
   } catch {
     return NextResponse.redirect(
-      new URL("/cluster-produtora/contrato?erro=govbr-falha", request.url)
+      new URL("/servicos/producao-musical/contrato?erro=govbr-falha", request.url)
     );
   }
 }
