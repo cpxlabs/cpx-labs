@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function ClusterProdutoraPage() {
   return (
     <section className="min-h-screen bg-brand-950 pt-28 pb-24 text-white">
@@ -127,6 +129,16 @@ export default function ClusterProdutoraPage() {
             <p>6.3 Esta descrição substitui quaisquer versões anteriores e serve como base formal para o contrato de prestação de serviço.</p>
           </div>
         </section>
+
+        <div className="text-center mb-8">
+          <Link
+            href="/cluster-produtora/contrato"
+            className="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-white px-8 py-4 rounded-full text-base font-semibold transition-all duration-300 ease-spring brand-glow active:scale-[0.97]"
+          >
+            Solicitar Serviço
+            <span aria-hidden="true">&rarr;</span>
+          </Link>
+        </div>
 
         <div className="pt-6 text-center text-xs border-t border-brand-800 text-brand-200/60">
           <p><strong>Cluster Produtora</strong> &middot; Um braço do CPX Labs</p>
