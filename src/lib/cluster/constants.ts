@@ -17,7 +17,7 @@ export const CLUSTER_SERVICES: ServiceOption[] = [
     id: "ep-album",
     label: "EP / Álbum",
     description: "Escopo completo de Single por faixa · Identidade sonora unificada",
-    price: 400,
+    price: 600,
     isPerTrack: true,
   },
   {
@@ -34,11 +34,19 @@ export const UF_LIST = [
 ];
 
 export const PAYMENT_OPTIONS = [
-  { value: "avista", label: "À vista" },
+  { value: "pix", label: "Pix (à vista)" },
+  { value: "avista", label: "À vista (dinheiro/transferência)" },
   { value: "entrada50", label: "50% entrada + 50% na aprovação final" },
   { value: "parcelado", label: "Parcelado" },
   { value: "mercadolivre", label: "Mercado Livre (taxas adicionais)" },
 ];
+
+export const DISCOUNT_RATE = 0.2;
+export const DISCOUNT_PAYMENT_METHODS = ["pix", "avista"];
+
+export function hasDiscount(servico: string, formaPagamento: string): boolean {
+  return servico === "ep-album" && DISCOUNT_PAYMENT_METHODS.includes(formaPagamento);
+}
 
 export function formatPrice(value: number): string {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });

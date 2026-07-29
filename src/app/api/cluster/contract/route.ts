@@ -26,7 +26,8 @@ export async function POST(request: NextRequest) {
 
     const protocolo = generateProtocol();
 
-    const pdfBuffer = generateContractPdf(formData, signer.name, signer.cpf, protocolo);
+    const pdfUint8 = generateContractPdf(formData, signer.name, signer.cpf, protocolo);
+    const pdfBuffer = Buffer.from(pdfUint8);
 
     // Send email via Resend
     const emailSent = await sendContractEmail({

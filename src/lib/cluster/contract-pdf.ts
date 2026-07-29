@@ -1,13 +1,13 @@
 import { jsPDF } from "jspdf";
 import type { ContractFormData, ServiceOption } from "./types";
-import { CLUSTER_SERVICES, formatPrice, generateProtocol } from "./constants";
+import { CLUSTER_SERVICES, formatPrice, generateProtocol, hasDiscount, DISCOUNT_RATE } from "./constants";
 
 export function generateContractPdf(
   data: ContractFormData,
   signerName: string,
   signerCpf: string,
   protocolo: string
-): Buffer {
+): Uint8Array {
   const doc = new jsPDF({ format: "a4", unit: "mm" });
   const pageWidth = 210;
   const margin = 25;
@@ -160,15 +160,22 @@ export function generateContractPdf(
   doc.setFontSize(9);
   doc.setTextColor(0);
 
-  const totalValue = data.servico === "ep-album"
-    ? (servico?.price || 400) * (data.numFaixas || 1)
+  const rawTotal = data.servico === "ep-album"
+    ? (servico?.price || 600) * (data.numFaixas || 1)
     : servico?.price || data.servico === "other" ? 0 : 600;
+
+  const applyDiscount = hasDiscount(data.servico, data.formaPagamento);
+  const totalValue = applyDiscount ? rawTotal * (1 - DISCOUNT_RATE) : rawTotal;
 
   doc.text(`3.1 Valor total do contrato: ${formatPrice(totalValue)}.`, margin, y);
   y += 4;
-  doc.text("3.2 Valores referenciais: Produção de Single R$ 600,00 · Pós-Produção de Single R$ 400,00 ·", margin, y);
+  if (applyDiscount) {
+    doc.text(`    (Valor original: ${formatPrice(rawTotal)} · ${DISCOUNT_RATE * 100}% de desconto à vista/Pix)`, margin, y);
+    y += 4;
+  }
+  doc.text("3.2 Valores referenciais: Produção de Single R$ 600,00 · Pós-Produção de Single R$ 400,00", margin, y);
   y += 4;
-  doc.text("    EP/Álbum: R$ 400,00 por faixa.", margin, y);
+  doc.text("    · EP/Álbum: R$ 600,00 por faixa (20% de desconto à vista ou Pix).", margin, y);
   y += 4;
   doc.text(`3.3 Forma de pagamento: ${data.formaPagamento || "A combinar"}.`, margin, y);
   y += 4;
@@ -287,9 +294,9 @@ export function generateContractPdf(
   doc.setFontSize(8);
   doc.text(`Assinatura eletrônica via GOV.br`, margin, y);
   y += 3;
-  doc.text(`${signerName}`, margin, y);
+  doc.text(signerName || "(Aguardando assinatura)", margin, y);
   y += 3;
-  doc.text(`CPF: ${signerCpf} · Data: ${new Date().toLocaleDateString("pt-BR")}`, margin, y);
+  doc.text(signerCpf ? `CPF: ${signerCpf} · Data: ${new Date().toLocaleDateString("pt-BR")}` : "", margin, y);
   y += 8;
 
   // Contractor
@@ -313,7 +320,10 @@ export function generateContractPdf(
   doc.setFont("Helvetica", "normal");
   doc.setFontSize(7);
   doc.setTextColor(120);
-  doc.text(`Protocolo: ${protocolo} · Assinado eletronicamente via GOV.br · ${new Date().toISOString()}`, pageWidth / 2, y, { align: "center" });
+  const footerText = signerName
+    ? `Protocolo: ${protocolo} · Assinado eletronicamente via GOV.br · ${new Date().toISOString()}`
+    : `Pré-visualização · Protocolo: ${protocolo} · Documento não assinado`;
+  doc.text(footerText, pageWidth / 2, y, { align: "center" });
 
-  return Buffer.from(doc.output("arraybuffer"));
+  return new Uint8Array(doc.output("arraybuffer"));
 }

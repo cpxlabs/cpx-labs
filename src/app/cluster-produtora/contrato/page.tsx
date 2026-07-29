@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
-import { CLUSTER_SERVICES, UF_LIST, PAYMENT_OPTIONS, formatPrice } from "@/lib/cluster/constants";
+import { CLUSTER_SERVICES, UF_LIST, PAYMENT_OPTIONS, formatPrice, hasDiscount, DISCOUNT_RATE, generateProtocol } from "@/lib/cluster/constants";
+import { generateContractPdf } from "@/lib/cluster/contract-pdf";
 import type { ContractFormData, ServiceType } from "@/lib/cluster/types";
 
 const personalSchema = z.object({
@@ -78,6 +79,29 @@ export default function ContratoPage() {
     s => s.id === serviceForm.watch("servico")
   );
 
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [protocolo, setProtocolo] = useState<string>("");
+
+  useEffect(() => {
+    if (step === 3 && !pdfUrl) {
+      const personal = personalForm.getValues();
+      const service = serviceForm.getValues();
+      const all: ContractFormData = {
+        ...personal,
+        ...service,
+        servico: service.servico as ServiceType,
+        numFaixas: (service.numFaixas as number) || 1,
+      } as ContractFormData;
+      const proto = generateProtocol();
+      setProtocolo(proto);
+      const pdfBytes = generateContractPdf(all, "", "", proto);
+      const blob = new Blob([pdfBytes as BlobPart], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);
+      return () => URL.revokeObjectURL(url);
+    }
+  }, [step]);
+
   const allData: ContractFormData = {
     ...personalForm.watch(),
     ...serviceForm.watch(),
@@ -86,9 +110,13 @@ export default function ContratoPage() {
     numFaixas: serviceForm.watch("numFaixas") || 1,
   } as ContractFormData;
 
-  const totalValue = allData.servico === "ep-album"
-    ? (servicoSelecionado?.price || 400) * (allData.numFaixas || 1)
+  const rawTotal = allData.servico === "ep-album"
+    ? (servicoSelecionado?.price || 600) * (allData.numFaixas || 1)
     : servicoSelecionado?.price || 0;
+
+  const applyDiscount = hasDiscount(allData.servico, serviceForm.watch("formaPagamento"));
+  const totalValue = applyDiscount ? rawTotal * (1 - DISCOUNT_RATE) : rawTotal;
+  const descontoLabel = applyDiscount ? `-${DISCOUNT_RATE * 100}% à vista/Pix` : null;
 
   const handleSign = async () => {
     const termsValid = await termsForm.trigger();
@@ -246,6 +274,7 @@ export default function ContratoPage() {
               <div>
                 <label className="block text-sm font-medium mb-3">Tipo de Serviço *</label>
                 <div className="space-y-3">
+                  <input type="hidden" {...serviceForm.register("servico")} />
                   {CLUSTER_SERVICES.map(service => (
                     <label key={service.id} className={`block p-4 rounded-lg border cursor-pointer transition-all ${
                       serviceForm.watch("servico") === service.id
@@ -301,6 +330,11 @@ export default function ContratoPage() {
                   {PAYMENT_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                 </select>
                 {serviceForm.formState.errors.formaPagamento && <p className="text-red-400 text-xs mt-1">{serviceForm.formState.errors.formaPagamento.message}</p>}
+                {serviceForm.watch("servico") === "ep-album" && ["pix", "avista"].includes(serviceForm.watch("formaPagamento")) && (
+                  <p className="text-green-400 text-xs mt-2">
+                    EP/Álbum com pagamento à vista ou Pix ganha <strong>20% de desconto</strong>
+                  </p>
+                )}
               </div>
 
               <div>
@@ -322,35 +356,43 @@ export default function ContratoPage() {
 
         {step === 3 && (
           <div className="space-y-5">
-            <div className="rounded-xl border border-brand-800 bg-brand-900/50 p-6 space-y-4">
-              <h2 className="text-lg font-bold text-brand-400 font-mono text-sm uppercase tracking-wide">
-                Revisão do Contrato
+            <div className="rounded-xl border border-brand-800 bg-brand-900/50 p-6">
+              <h2 className="text-lg font-bold text-brand-400 font-mono text-sm uppercase tracking-wide mb-4">
+                Pré-visualização do Contrato
               </h2>
 
-              <div className="space-y-4 text-sm">
-                <div>
-                  <h3 className="font-semibold text-brand-300 mb-2">Dados Pessoais</h3>
-                  <div className="grid grid-cols-2 gap-2 text-brand-200/80">
-                    <p>Nome: <span className="text-white">{personalForm.watch("nome")}</span></p>
-                    <p>CPF/CNPJ: <span className="text-white">{personalForm.watch("cpfCnpj")}</span></p>
-                    <p>E-mail: <span className="text-white">{personalForm.watch("email")}</span></p>
-                    <p>Telefone: <span className="text-white">{personalForm.watch("telefone")}</span></p>
-                    <p className="col-span-2">Endereço: <span className="text-white">{personalForm.watch("endereco")}, {personalForm.watch("numero")}</span></p>
-                    <p className="col-span-2">Cidade: <span className="text-white">{personalForm.watch("cidade")} - {personalForm.watch("uf")}</span></p>
-                  </div>
+              {pdfUrl && (
+                <div className="mb-4">
+                  <embed
+                    src={pdfUrl}
+                    type="application/pdf"
+                    className="w-full rounded-lg border border-brand-800"
+                    style={{ height: "70vh", minHeight: "400px" }}
+                  />
                 </div>
+              )}
 
-                <div className="border-t border-brand-800 pt-4">
-                  <h3 className="font-semibold text-brand-300 mb-2">Serviço</h3>
-                  <div className="grid grid-cols-2 gap-2 text-brand-200/80">
-                    <p>Tipo: <span className="text-white">{servicoSelecionado?.label}</span></p>
-                    <p>Valor: <span className="text-white font-bold">{formatPrice(totalValue)}</span></p>
-                    {serviceForm.watch("escopoDetalhado") && (
-                      <p className="col-span-2">Escopo: <span className="text-white">{serviceForm.watch("escopoDetalhado")}</span></p>
-                    )}
-                    <p>Pagamento: <span className="text-white">{PAYMENT_OPTIONS.find(o => o.value === serviceForm.watch("formaPagamento"))?.label}</span></p>
-                  </div>
-                </div>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href={pdfUrl || "#"}
+                  download={`contrato-cluster-${protocolo.toLowerCase()}.pdf`}
+                  className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-6 py-3 rounded-full text-sm font-semibold transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Baixar PDF
+                </a>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="inline-flex items-center gap-2 border border-brand-700 hover:border-brand-500 text-white px-6 py-3 rounded-full text-sm font-semibold transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  </svg>
+                  Imprimir
+                </button>
               </div>
             </div>
 
